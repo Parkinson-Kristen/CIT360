@@ -1,0 +1,62 @@
+android {
+    // ...
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+public class UnitTestOne {
+    @Test
+    public static void testVerifyTextStringArray() {
+        MyUnit myUnit = new MyUnit();
+        Sting [] expectedArray = {"yes, ", "no, ", "do not save"};
+        String [] verifyExpectedArray = myUnit.VerifyTextStringArray();
+        assertArrayEquals(expectedArray, verifyExpectedArray);
+    }
+
+public class UnitTestTwo {
+    @Test
+    public static void testConcatinate(){
+        MyUnit myUnit = new MyUnit();
+        String result = myUnit.concatinate("yes", "do not save");
+        assertEquals("yes, do not save", result);
+    }
+                            
+public class UnitTestThree {
+    @Test
+    public static void testBoolean() {
+        MyUnit myUnit = new MyUnit();
+        assertTrue (myUnit.testBoolean());
+        assertFalse (myUnit.testBoolean());
+   }
+
+public class UnitTestFour {
+    @Test
+    public static void testObject() {
+        MyUnit myUnit = new MyUnit ();
+        assertNotNull(myUnit.testObject());
+        assertNull (myUnit.testObject());
+   }
+
+public class UnitTestFour {
+    @Test
+    public static void = testSameObject(){
+        MyUnit myUnity = new MyUnit ();
+        assertNotSame   (myUnit.testSameObject(),myUnit.testSameObject());
+
+        assertSame      (myUnit.getSameObject(),myUnit.testSameObject());
+   }
+                                                            
+public class UnitTestFive {
+    @Test
+    public static void testMatches() {
+        assertThat("this string", is ("this string"));
+        assertThat (480-518-1560, is(480-518-1560));
+}
+
+}
+                                             
+                                             
