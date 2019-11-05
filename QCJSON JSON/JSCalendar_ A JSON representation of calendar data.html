@@ -1,0 +1,2339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0062)https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+
+  <title>JSCalendar: A JSON representation of calendar data</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.toc" rel="Contents">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.1" rel="Chapter" title="1.1 Relation to the iCalendar format">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.2" rel="Chapter" title="1.2 Notational Conventions">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2" rel="Chapter" title="2 JSCalendar objects">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.1" rel="Chapter" title="2.1 JSEvent">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.2" rel="Chapter" title="2.2 JSTask">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.3" rel="Chapter" title="2.3 JSGroup">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3" rel="Chapter" title="3 Structure of JSCalendar objects">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.1" rel="Chapter" title="3.1 Type signatures">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2" rel="Chapter" title="3.2 Data Types">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.1" rel="Chapter" title="3.2.1 UTCDate">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.2" rel="Chapter" title="3.2.2 LocalDate">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.3" rel="Chapter" title="3.2.3 Duration">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.4" rel="Chapter" title="3.2.4 PatchObject">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.5" rel="Chapter" title="3.2.5 Normalisation and equivalence">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.3" rel="Chapter" title="3.3 Custom property extensions and values">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4" rel="Chapter" title="4 Common JSCalendar properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1" rel="Chapter" title="4.1 Metadata properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.1" rel="Chapter" title="4.1.1 @type">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.2" rel="Chapter" title="4.1.2 uid">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.3" rel="Chapter" title="4.1.3 relatedTo">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.4" rel="Chapter" title="4.1.4 prodId">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.5" rel="Chapter" title="4.1.5 created">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.6" rel="Chapter" title="4.1.6 updated">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.7" rel="Chapter" title="4.1.7 sequence">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.8" rel="Chapter" title="4.1.8 method">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2" rel="Chapter" title="4.2 What and where properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.1" rel="Chapter" title="4.2.1 title">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.2" rel="Chapter" title="4.2.2 description">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.3" rel="Chapter" title="4.2.3 htmlDescription">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.4" rel="Chapter" title="4.2.4 locations">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.5" rel="Chapter" title="4.2.5 links">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.6" rel="Chapter" title="4.2.6 locale">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.7" rel="Chapter" title="4.2.7 keywords">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.8" rel="Chapter" title="4.2.8 categories">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.9" rel="Chapter" title="4.2.9 color">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3" rel="Chapter" title="4.3 Recurrence properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.1" rel="Chapter" title="4.3.1 recurrenceRule">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.2" rel="Chapter" title="4.3.2 recurrenceOverrides">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4" rel="Chapter" title="4.4 Sharing and scheduling properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.1" rel="Chapter" title="4.4.1 priority">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.2" rel="Chapter" title="4.4.2 freeBusyStatus">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.3" rel="Chapter" title="4.4.3 privacy">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.4" rel="Chapter" title="4.4.4 replyTo">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.5" rel="Chapter" title="4.4.5 participants">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5" rel="Chapter" title="4.5 Alerts properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.1" rel="Chapter" title="4.5.1 useDefaultAlerts">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.2" rel="Chapter" title="4.5.2 alerts">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6" rel="Chapter" title="4.6 Multilingual properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6.1" rel="Chapter" title="4.6.1 localizations">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5" rel="Chapter" title="5 Type-specific JSCalendar properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1" rel="Chapter" title="5.1 JSEvent properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.1" rel="Chapter" title="5.1.1 start">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.2" rel="Chapter" title="5.1.2 timeZone">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.3" rel="Chapter" title="5.1.3 duration">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.4" rel="Chapter" title="5.1.4 isAllDay">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.5" rel="Chapter" title="5.1.5 status">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2" rel="Chapter" title="5.2 JSTask properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.1" rel="Chapter" title="5.2.1 due">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.2" rel="Chapter" title="5.2.2 start">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.3" rel="Chapter" title="5.2.3 timeZone">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.4" rel="Chapter" title="5.2.4 estimatedDuration">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.5" rel="Chapter" title="5.2.5 completed">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.6" rel="Chapter" title="5.2.6 isAllDay">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.7" rel="Chapter" title="5.2.7 progress">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.8" rel="Chapter" title="5.2.8 status">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3" rel="Chapter" title="5.3 JSGroup properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.1" rel="Chapter" title="5.3.1 entries">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.2" rel="Chapter" title="5.3.2 source">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6" rel="Chapter" title="6 Conversion from and to iCalendar">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.1" rel="Chapter" title="6.1 JSEvent">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.2" rel="Chapter" title="6.2 JSTask">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.3" rel="Chapter" title="6.3 JSGroup">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.4" rel="Chapter" title="6.4 Common properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.5" rel="Chapter" title="6.5 Locations and participants">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.6" rel="Chapter" title="6.6 Unknown properties">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7" rel="Chapter" title="7 JSCalendar object examples">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.1" rel="Chapter" title="7.1 Simple event">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.2" rel="Chapter" title="7.2 Simple task">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.3" rel="Chapter" title="7.3 Simple group">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.4" rel="Chapter" title="7.4 All-day event">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.5" rel="Chapter" title="7.5 Task with a due date">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.6" rel="Chapter" title="7.6 Event with end time-zone">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.7" rel="Chapter" title="7.7 Floating-time event (with recurrence)">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.8" rel="Chapter" title="7.8 Event with multiple locations and localization">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.9" rel="Chapter" title="7.9 Recurring event with overrides">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.10" rel="Chapter" title="7.10 Recurring event with participants">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.8" rel="Chapter" title="8 Security Considerations">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.10" rel="Chapter" title="10 Acknowledgments">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references" rel="Chapter" title="11 References">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.1" rel="Chapter" title="11.1 Normative References">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.8.5 - https://tools.ietf.org/tools/xml2rfc">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+<meta name="viewport" content="width=600;">
+  <link rel="schema.dct" href="http://purl.org/dc/terms/">
+
+  <meta name="dct.creator" content="Jenkins, N. and R. Stepanek">
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-calext-jscalendar-00">
+  <meta name="dct.issued" scheme="ISO8601" content="2018-1-29">
+  <meta name="dct.abstract" content="This specification defines a data model and JSON representation of calendar data that can be used for storage and data exchange in a calendaring and scheduling environment. It aims to be an alternative to the widely deployed iCalendar data format and to be unambiguous, extendable and simple to process.  ">
+  <meta name="description" content="This specification defines a data model and JSON representation of calendar data that can be used for storage and data exchange in a calendaring and scheduling environment. It aims to be an alternative to the widely deployed iCalendar data format and to be unambiguous, extendable and simple to process.  ">
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">Calendaring extensions</td>
+<td class="right">N. Jenkins</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right">R. Stepanek</td>
+</tr>
+<tr>
+<td class="left">Intended status: Standards Track</td>
+<td class="right">FastMail</td>
+</tr>
+<tr>
+<td class="left">Expires: August 2, 2018</td>
+<td class="right">January 29, 2018</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">JSCalendar: A JSON representation of calendar data<br>
+  <span class="filename">draft-ietf-calext-jscalendar-00</span></p>
+  
+  <h1 id="rfc.abstract"><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.abstract">Abstract</a></h1>
+<p>This specification defines a data model and JSON representation of calendar data that can be used for storage and data exchange in a calendaring and scheduling environment. It aims to be an alternative to the widely deployed iCalendar data format and to be unambiguous, extendable and simple to process.  </p>
+<h1 id="rfc.status"><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on August 2, 2018.</p>
+<h1 id="rfc.copyrightnotice"><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint">
+  <h1 class="np" id="rfc.toc"><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1">Introduction</a>
+</li>
+<ul><li>1.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.1">Relation to the iCalendar format</a>
+</li>
+<li>1.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.2">Notational Conventions</a>
+</li>
+</ul><li>2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2">JSCalendar objects</a>
+</li>
+<ul><li>2.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.1">JSEvent</a>
+</li>
+<li>2.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.2">JSTask</a>
+</li>
+<li>2.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.3">JSGroup</a>
+</li>
+</ul><li>3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3">Structure of JSCalendar objects</a>
+</li>
+<ul><li>3.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.1">Type signatures</a>
+</li>
+<li>3.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2">Data Types</a>
+</li>
+<ul><li>3.2.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.1">UTCDate</a>
+</li>
+<li>3.2.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.2">LocalDate</a>
+</li>
+<li>3.2.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.3">Duration</a>
+</li>
+<li>3.2.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.4">PatchObject</a>
+</li>
+<li>3.2.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.5">Normalisation and equivalence</a>
+</li>
+</ul><li>3.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.3">Custom property extensions and values</a>
+</li>
+</ul><li>4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4">Common JSCalendar properties</a>
+</li>
+<ul><li>4.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1">Metadata properties</a>
+</li>
+<ul><li>4.1.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.1">@type</a>
+</li>
+<li>4.1.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.2">uid</a>
+</li>
+<li>4.1.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.3">relatedTo</a>
+</li>
+<li>4.1.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.4">prodId</a>
+</li>
+<li>4.1.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.5">created</a>
+</li>
+<li>4.1.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.6">updated</a>
+</li>
+<li>4.1.7.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.7">sequence</a>
+</li>
+<li>4.1.8.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.8">method</a>
+</li>
+</ul><li>4.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2">What and where properties</a>
+</li>
+<ul><li>4.2.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.1">title</a>
+</li>
+<li>4.2.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.2">description</a>
+</li>
+<li>4.2.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.3">htmlDescription</a>
+</li>
+<li>4.2.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.4">locations</a>
+</li>
+<li>4.2.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.5">links</a>
+</li>
+<li>4.2.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.6">locale</a>
+</li>
+<li>4.2.7.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.7">keywords</a>
+</li>
+<li>4.2.8.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.8">categories</a>
+</li>
+<li>4.2.9.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.9">color</a>
+</li>
+</ul><li>4.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3">Recurrence properties</a>
+</li>
+<ul><li>4.3.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.1">recurrenceRule</a>
+</li>
+<li>4.3.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.2">recurrenceOverrides</a>
+</li>
+</ul><li>4.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4">Sharing and scheduling properties</a>
+</li>
+<ul><li>4.4.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.1">priority</a>
+</li>
+<li>4.4.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.2">freeBusyStatus</a>
+</li>
+<li>4.4.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.3">privacy</a>
+</li>
+<li>4.4.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.4">replyTo</a>
+</li>
+<li>4.4.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.5">participants</a>
+</li>
+</ul><li>4.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5">Alerts properties</a>
+</li>
+<ul><li>4.5.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.1">useDefaultAlerts</a>
+</li>
+<li>4.5.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.2">alerts</a>
+</li>
+</ul><li>4.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6">Multilingual properties</a>
+</li>
+<ul><li>4.6.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6.1">localizations</a>
+</li>
+</ul></ul><li>5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5">Type-specific JSCalendar properties</a>
+</li>
+<ul><li>5.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1">JSEvent properties</a>
+</li>
+<ul><li>5.1.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.1">start</a>
+</li>
+<li>5.1.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.2">timeZone</a>
+</li>
+<li>5.1.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.3">duration</a>
+</li>
+<li>5.1.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.4">isAllDay</a>
+</li>
+<li>5.1.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.5">status</a>
+</li>
+</ul><li>5.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2">JSTask properties</a>
+</li>
+<ul><li>5.2.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.1">due</a>
+</li>
+<li>5.2.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.2">start</a>
+</li>
+<li>5.2.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.3">timeZone</a>
+</li>
+<li>5.2.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.4">estimatedDuration</a>
+</li>
+<li>5.2.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.5">completed</a>
+</li>
+<li>5.2.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.6">isAllDay</a>
+</li>
+<li>5.2.7.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.7">progress</a>
+</li>
+<li>5.2.8.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.8">status</a>
+</li>
+</ul><li>5.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3">JSGroup properties</a>
+</li>
+<ul><li>5.3.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.1">entries</a>
+</li>
+<li>5.3.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.2">source</a>
+</li>
+</ul></ul><li>6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6">Conversion from and to iCalendar</a>
+</li>
+<ul><li>6.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.1">JSEvent</a>
+</li>
+<li>6.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.2">JSTask</a>
+</li>
+<li>6.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.3">JSGroup</a>
+</li>
+<li>6.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.4">Common properties</a>
+</li>
+<li>6.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.5">Locations and participants</a>
+</li>
+<li>6.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.6">Unknown properties</a>
+</li>
+</ul><li>7.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7">JSCalendar object examples</a>
+</li>
+<ul><li>7.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.1">Simple event</a>
+</li>
+<li>7.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.2">Simple task</a>
+</li>
+<li>7.3.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.3">Simple group</a>
+</li>
+<li>7.4.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.4">All-day event</a>
+</li>
+<li>7.5.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.5">Task with a due date</a>
+</li>
+<li>7.6.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.6">Event with end time-zone</a>
+</li>
+<li>7.7.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.7">Floating-time event (with recurrence)</a>
+</li>
+<li>7.8.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.8">Event with multiple locations and localization</a>
+</li>
+<li>7.9.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.9">Recurring event with overrides</a>
+</li>
+<li>7.10.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.10">Recurring event with participants</a>
+</li>
+</ul><li>8.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.8">Security Considerations</a>
+</li>
+<li>9.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.9">IANA Considerations</a>
+</li>
+<li>10.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.10">Acknowledgments</a>
+</li>
+<li>11.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references">References</a>
+</li>
+<ul><li>11.1.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.1">Normative References</a>
+</li>
+<li>11.2.   <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.2">Informative References</a>
+</li>
+</ul><li><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.authors">Authors' Addresses</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1">1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#introduction" id="introduction">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">This document defines a data model for calendar event and task objects, or groups of such objects, in electronic calendar applications and systems. It aims to be unambiguous, extendable and simple to process.  </p>
+<p id="rfc.section.1.p.2">The key design considerations for this data model are as follows: </p>
+
+<ul>
+<li>The attributes of the calendar entry represented must be described as a simple key-value pair, reducing complexity of its representation.  </li>
+<li>The data model should avoid all ambiguities and make it difficult to make mistakes during implementation.  </li>
+<li>Most of the initial set of attributes should be taken from the iCalendar data format (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a>, also see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#relation-to-icalendar" class="xref">Section 1.1</a>), but the specification should add new attributes or value types, or not support existing ones, where appropriate. Conversion between the data formats need not fully preserve semantic meaning.  </li>
+<li>Extensions, such as new properties and components, MUST NOT lead to requiring an update to this document.  </li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.1.p.3">The representation of this data model is defined in the I-JSON format <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7493" class="xref">[RFC7493]</a>, which is a strict subset of the JavaScript Object Notation (JSON) Data Interchange Format <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8259" class="xref">[RFC8259]</a>.  Using JSON mostly is a pragmatic choice: its widespread use should help to speed up JSCalendar adoption and a wide range of production-ready JSON implementations allows to decrease interoperability issues.  </p>
+<h1 id="rfc.section.1.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.1">1.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#relation-to-icalendar" id="relation-to-icalendar">Relation to the iCalendar format</a>
+</h1>
+<p id="rfc.section.1.1.p.1">The iCalendar data format <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a>, a widely deployed interchange format for calendaring and scheduling data, has served calendaring vendors for a long while, but contains some ambiguities and pitfalls that can not be overcome without backward-incompatible changes.  </p>
+<p id="rfc.section.1.1.p.2">For example, iCalendar defines various formats for local times, UTC time and dates, which confuses new users. Other sources for errors are the requirement for custom time-zone definitions within a single calendar component, as well as the iCalendar format itself; the latter causing interoperability issues due to misuse of CR LF terminated strings, line continuations and subtle differences between iCalendar parsers. Lastly, up until recently the iCalendar format did not allow to express the difference between two calendar components, which results in verbose exchanges during scheduling.  </p>
+<p id="rfc.section.1.1.p.3">Some of these issues were addressed by the <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7265" class="xref">jCal</a> format, which is a direct mapping between iCalendar and JSON. However, it did not attempt to extend or update iCalendar semantics.  </p>
+<h1 id="rfc.section.1.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.1.2">1.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#notational-conventions" id="notational-conventions">Notational Conventions</a>
+</h1>
+<p id="rfc.section.1.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC2119" class="xref">[RFC2119]</a>.  </p>
+<p id="rfc.section.1.2.p.2">The underlying format used for this specification is JSON. Consequently, the terms "object" and "array" as well as the four primitive types (strings, numbers, booleans, and null) are to be interpreted as described in Section 1 of<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8259" class="xref">[RFC8259]</a>.  </p>
+<p id="rfc.section.1.2.p.3">Some examples in this document contain "partial" JSON documents used for illustrative purposes. In these examples, three periods "..." are used to indicate a portion of the document that has been removed for compactness.  </p>
+<h1 id="rfc.section.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2">2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-objects" id="jscalendar-objects">JSCalendar objects</a>
+</h1>
+<p id="rfc.section.2.p.1">This section describes the calendar object types specified by JSCalendar.  </p>
+<h1 id="rfc.section.2.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.1">2.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsevent" id="jsevent">JSEvent</a>
+</h1>
+<p id="rfc.section.2.1.p.1">MIME type: <samp>application/calendar+json;type=jsevent</samp> </p>
+<p id="rfc.section.2.1.p.2">A JSEvent represents a scheduled amount of time on a calendar, typically a meeting, appointment, reminder or anniversary. Multiple participants may partake in the event at multiple locations.  </p>
+<p id="rfc.section.2.1.p.3">The <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#type" class="xref">@type</a> property value MUST be <samp>jsevent</samp>.  </p>
+<h1 id="rfc.section.2.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.2">2.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jstask" id="jstask">JSTask</a>
+</h1>
+<p id="rfc.section.2.2.p.1">MIME type: <samp>application/calendar+json;type=jstask</samp> </p>
+<p id="rfc.section.2.2.p.2">A JSTask represents an action-item, assignment, to-do or work item .  </p>
+<p id="rfc.section.2.2.p.3">The <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#type" class="xref">@type</a> property value MUST be <samp>jstask</samp>.  </p>
+<p id="rfc.section.2.2.p.4">A JSTask may start and be due at certain points in time, may take some estimated time to complete and may recur; none of which is required. This notably differs from <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsevent" class="xref">JSEvent</a> which is required to start at a certain point in time and typically takes some non-zero duration to complete.  </p>
+<h1 id="rfc.section.2.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.2.3">2.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsgroup" id="jsgroup">JSGroup</a>
+</h1>
+<p id="rfc.section.2.3.p.1">MIME type: <samp>application/calendar+json;type=jsgroup</samp> </p>
+<p id="rfc.section.2.3.p.2">A JSGroup is a collection of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsevent" class="xref">JSEvent</a> and <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jstask" class="xref">JSTask</a> objects. Typically, objects are grouped by topic (e.g. by keywords) or calendar membership.  </p>
+<p id="rfc.section.2.3.p.3">The <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#type" class="xref">@type</a> property value MUST be <samp>jsgroup</samp>.  </p>
+<h1 id="rfc.section.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3">3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#structure-of-jscalendar-objects" id="structure-of-jscalendar-objects">Structure of JSCalendar objects</a>
+</h1>
+<p id="rfc.section.3.p.1">A JSCalendar object is a JSON object, which MUST be valid I-JSON (a stricter subset of JSON), as specified in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8259" class="xref">[RFC8259]</a>. Property names and values are case-sensitive.  </p>
+<p id="rfc.section.3.p.2">The object has a collection of properties, as specified in the following sections. Unless otherwise specified, all properties are optional; omitted properties MUST be treated identically to if that property had the value of <samp>null</samp>, unless otherwise specified.  </p>
+<h1 id="rfc.section.3.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.1">3.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#type-signatures" id="type-signatures">Type signatures</a>
+</h1>
+<p id="rfc.section.3.1.p.1">Types signatures are given for all JSON objects in this document. The following conventions are used: </p>
+<p></p>
+
+<ul>
+<li>
+<samp>Boolean|String</samp>: The value is either a JSON <samp>Boolean</samp> value, or a JSON <samp>String</samp> value.  </li>
+<li>
+<samp>Foo</samp>: Any name that is not a native JSON type means an object for which the properties (and their types) are defined elsewhere within this document.  </li>
+<li>
+<samp>Foo[]</samp>: An array of objects of type <samp>Foo</samp>.  </li>
+<li>
+<samp>String[Foo]</samp>: A JSON <samp>Object</samp> being used as a map (associative array), where all the values are of type <samp>Foo</samp>.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.3.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2">3.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#data-types" id="data-types">Data Types</a>
+</h1>
+<p id="rfc.section.3.2.p.1">In addition to the standard JSON data types, the following data types are used in this specification: </p>
+<h1 id="rfc.section.3.2.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.1">3.2.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#utcdate-type" id="utcdate-type">UTCDate</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">This is a string in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC3339" class="xref">[RFC3339]</a> <samp>date-time</samp> format, with the further restrictions that any letters MUST be in upper-case, the time component MUST be included and the time MUST be in UTC.  Fractional second values MUST NOT be included unless non-zero and MUST NOT have trailing zeros, to ensure there is only a single representation for each date-time.  <br><br> For example <samp>2010-10-10T10:10:10.003Z</samp> is OK, but <samp>2010-10-10T10:10:10.000Z</samp> is invalid and MUST be encoded as <samp>2010-10-10T10:10:10Z</samp>.  </p>
+<p id="rfc.section.3.2.1.p.2">In common notation, it should be of the form <samp>YYYY-MM-DDTHH:MM:SSZ</samp>.  </p>
+<h1 id="rfc.section.3.2.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.2">3.2.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#localdate-type" id="localdate-type">LocalDate</a>
+</h1>
+<p id="rfc.section.3.2.2.p.1">This is a date-time string <em>with no time-zone/offset information</em>.  It is otherwise in the same format as UTCDate: <samp>YYYY-MM-DDTHH:MM:SS</samp>. The time-zone to associate the LocalDate with comes from an associated property, or if no time-zone is associated it defines <em>floating time</em>. Floating date-times are not tied to any specific time-zone. Instead, they occur in every timezone at the same <em>wall-clock</em> time (as opposed to the same instant point in time).  </p>
+<h1 id="rfc.section.3.2.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.3">3.2.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#duration-type" id="duration-type">Duration</a>
+</h1>
+<p id="rfc.section.3.2.3.p.1">A duration is represented by a subset of ISO8601 duration format, as specified by the following ABNF: </p>
+<pre>    dur-secfrac = "." 1*DIGIT
+    dur-second  = 1*DIGIT [dur-secfrac] "S"
+    dur-minute  = 1*DIGIT "M" [dur-second]
+    dur-hour    = 1*DIGIT "H" [dur-minute]
+    dur-time    = "T" (dur-hour / dur-minute / dur-second)
+    dur-day     = 1*DIGIT "D"
+
+    duration    = "P" (dur-day [dur-time] / dur-time)
+    </pre>
+<p id="rfc.section.3.2.3.p.2">In addition, the duration MUST NOT include fractional second values unless the fraction is non-zero. A zero duration MUST be represented as <samp>P0D</samp>.  </p>
+<h1 id="rfc.section.3.2.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.4">3.2.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#patchobject-type" id="patchobject-type">PatchObject</a>
+</h1>
+<p id="rfc.section.3.2.4.p.1">A <strong>PatchObject</strong> is of type <samp>String[*|null]</samp>, and represents an unordered set of patches on a JSON object.  The keys are a path in a subset of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC6901" class="xref">[RFC6901]</a> JSON pointer format, with an implicit leading <samp>/</samp> (i.e. prefix each key with <samp>/</samp> before applying the JSON pointer evaluation algorithm).  </p>
+<p id="rfc.section.3.2.4.p.2">A patch within a PatchObject is only valid, if all of the following conditions apply: </p>
+<p></p>
+
+<ol>
+<li>The pointer MUST NOT reference inside an array (i.e. it MUST NOT insert/delete from an array; the array MUST be replaced in its entirety instead).  </li>
+<li>When evaluating a path, all parts prior to the last (i.e. the value after the final slash) MUST exist.  </li>
+<li>There MUST NOT be two patches in the PatchObject where the pointer of one is the prefix of the pointer of the other, e.g. <samp>alerts/1/offset</samp> and <samp>alerts</samp>.  </li>
+</ol>
+
+<p> </p>
+<p id="rfc.section.3.2.4.p.4">The value associated with each pointer is either: </p>
+
+<ul>
+<li>
+<samp>null</samp>: Remove the property from the patched object. If not present in the parent, this a no-op.  </li>
+<li>Anything else: The value to replace the inherited property on the patch object with (if present) or add to the property (if not present).  </li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.3.2.4.p.5">Implementations MUST reject a PatchObject if any of its patches are invalid.  </p>
+<h1 id="rfc.section.3.2.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.2.5">3.2.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#normalisation" id="normalisation">Normalisation and equivalence</a>
+</h1>
+<p id="rfc.section.3.2.5.p.1">JSCalendar aims to provide unambiguous definitions for value types and properties, but does not define a general normalisation or equivalence method for JSCalendar objects and types. This is because the notion of equivalence might range from byte-level equivalence to semantic equivalence, depending on the respective use case (for example, the CalDAV protocol <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC4791" class="xref">[RFC4791]</a> requires octet equivalence of the encoded calendar object to determine ETag equivalence).  <br><br> Normalisation of JSCalendar objects is hindered because of the following reasons: </p>
+
+<ul>
+<li>Custom JSCalendar properties may contain arbitrary JSON values, including arrays. However, equivalence of arrays might or might not depend on the order of elements, depending on the respective property definition.  </li>
+<li>Several JSCalendar property values are defined as URIs and MIME types, but normalisation of these types is inherently protocol and scheme-specific, depending on the use-case of the equivalence definition (see section 6 of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC3986" class="xref">[RFC3986]</a>).  </li>
+</ul>
+
+<p> Considering this, the definition of equivalence and normalisation is left to client and server implementations and to be negotiated by a calendar exchange protocol or defined by another RFC.  </p>
+<h1 id="rfc.section.3.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.3.3">3.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#custom-properties" id="custom-properties">Custom property extensions and values</a>
+</h1>
+<p id="rfc.section.3.3.p.1">Vendors MAY add additional properties to the calendar object to support their custom features. The names of these properties MUST be prefixed with a domain name controlled by the vendor to avoid conflict, e.g. <samp>example.com/customprop</samp>.  </p>
+<p id="rfc.section.3.3.p.2">Some JSCalendar properties allow vendor-specific value extensions. If so, vendor specific values MUST be prefixed with a domain name controlled by the vendor, e.g. <samp>example.com/customrel</samp>, unless otherwise noted.  </p>
+<h1 id="rfc.section.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4">4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-props" id="jscalendar-props">Common JSCalendar properties</a>
+</h1>
+<p id="rfc.section.4.p.1">This section describes the properties that are common to the various JSCalendar object types. Specific JSCalendar object types may only support a subset of these properties.  The object type definitions in section <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-object-props" class="xref">Section 5</a> describe the set of supported properties per type.  </p>
+<h1 id="rfc.section.4.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1">4.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#metadata-properties" id="metadata-properties">Metadata properties</a>
+</h1>
+<h1 id="rfc.section.4.1.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.1">4.1.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#type" id="type">@type</a>
+</h1>
+<p id="rfc.section.4.1.1.p.1">Type: <samp>String</samp> </p>
+<p id="rfc.section.4.1.1.p.2">Specifies the type which this object represents.  This MUST be one of the following values, registered in a future RFC, or a vendor-specific value: </p>
+
+<ul>
+<li>
+<samp>jsevent</samp>: a JSCalendar event (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsevent" class="xref">Section 2.1</a>).  </li>
+<li>
+<samp>jstask</samp>: a JSCalendar task (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jstask" class="xref">Section 2.2</a>).  </li>
+<li>
+<samp>jsgroup</samp>: a JSCalendar group (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsgroup" class="xref">Section 2.3</a>).  </li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.4.1.1.p.3">A valid JSCalendar object MUST include this property.  </p>
+<h1 id="rfc.section.4.1.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.2">4.1.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#uid" id="uid">uid</a>
+</h1>
+<p id="rfc.section.4.1.2.p.1">Type: <samp>String</samp> </p>
+<p id="rfc.section.4.1.2.p.2">A globally unique identifier, used to associate the object as the same across different systems, calendars and views. The value of this property MUST be unique across <em>all</em> JSCalendar objects, even if they are of different type.  <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC4122" class="xref">[RFC4122]</a> describes a range of established algorithms to generate universally unique identifiers (UUID), and the random or pseudo-random version is recommended to use.  </p>
+<p id="rfc.section.4.1.2.p.3">A valid JSCalendar object MUST include this property.  </p>
+<h1 id="rfc.section.4.1.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.3">4.1.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#relatedTo" id="relatedTo">relatedTo</a>
+</h1>
+<p id="rfc.section.4.1.3.p.1">Type: <samp>String[Relation]|null</samp> </p>
+<p id="rfc.section.4.1.3.p.2">Relates the object to other JSCalendar objects. This is represented as a map of the uids of the related objects to information about the relation.  </p>
+<p id="rfc.section.4.1.3.p.3">A <strong>Relation</strong> object has the following properties: </p>
+<p></p>
+
+<ul><li>
+<strong>relation</strong>: <samp>String[]</samp> Describes how the linked object is related to this object.  <br><br> The strings in the array MUST each be at most one of the following values, registered in a future RFC, or a vendor-specific value: <ul>
+<li>
+<samp>first</samp>: The linked object is the first in the series this object is part of.  </li>
+<li>
+<samp>next</samp>: The linked object is the next in the series this object is part of.  </li>
+<li>
+<samp>child</samp>: The linked object is a subpart of this object.  </li>
+<li>
+<samp>parent</samp>: This object is part of the overall linked object.  </li>
+</ul>
+<p> </p>
+</li></ul>
+
+<p> </p>
+<p id="rfc.section.4.1.3.p.5">If an object is split to make a "this and future" change to a recurrence, the original object MUST be truncated to end at the previous occurrence before this split, and a new object created to represent all the objects after the split.  A <samp>relation=["next"]</samp> relatedTo property MUST be set on the original object with the uid of the new object. A <samp>relation=["first"]</samp> relatedTo property with the UID of the first object in the series MUST be set on the new object. Clients can then follow these UIDs to get the complete set of objects if the user wishes to modify them all at once.  </p>
+<h1 id="rfc.section.4.1.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.4">4.1.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#prodId" id="prodId">prodId</a>
+</h1>
+<p id="rfc.section.4.1.4.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.4.1.4.p.2">The identifier for the product that created the JSCalendar object.  </p>
+<p id="rfc.section.4.1.4.p.3">The vendor of the implementation SHOULD ensure that this is a globally unique identifier, using some technique such as an FPI value, as defined in [ISO.9070.1991].  </p>
+<p id="rfc.section.4.1.4.p.4">This property SHOULD NOT be used to alter the interpretation of an JSCalendar object beyond the semantics specified in this document. For example, it is not to be used to further the understanding of non-standard properties.  </p>
+<h1 id="rfc.section.4.1.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.5">4.1.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#created" id="created">created</a>
+</h1>
+<p id="rfc.section.4.1.5.p.1">Type: <samp>UTCDate|null</samp> </p>
+<p id="rfc.section.4.1.5.p.2">The date and time this object was initially created.  </p>
+<h1 id="rfc.section.4.1.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.6">4.1.6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#updated" id="updated">updated</a>
+</h1>
+<p id="rfc.section.4.1.6.p.1">Type: <samp>UTCDate</samp> </p>
+<p id="rfc.section.4.1.6.p.2">The date and time the data in this object was last modified.  </p>
+<h1 id="rfc.section.4.1.7">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.7">4.1.7.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sequence" id="sequence">sequence</a>
+</h1>
+<p id="rfc.section.4.1.7.p.1">Type: <samp>Number</samp> (Defaults to <samp>0</samp> if omitted) </p>
+<p id="rfc.section.4.1.7.p.2">Initially zero, this MUST be a non-negative integer that is monotonically incremented each time a change is made to the object.  </p>
+<h1 id="rfc.section.4.1.8">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.1.8">4.1.8.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#method" id="method">method</a>
+</h1>
+<p id="rfc.section.4.1.8.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.4.1.8.p.2">The iTIP (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5546" class="xref">[RFC5546]</a>) method, in lower-case. Used for scheduling.  </p>
+<h1 id="rfc.section.4.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2">4.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#whatwhere-properties" id="whatwhere-properties">What and where properties</a>
+</h1>
+<h1 id="rfc.section.4.2.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.1">4.2.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#title" id="title">title</a>
+</h1>
+<p id="rfc.section.4.2.1.p.1">Type: <samp>String</samp> (Defaults to the empty string if omitted) </p>
+<p id="rfc.section.4.2.1.p.2">A short summary of the object.  </p>
+<h1 id="rfc.section.4.2.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.2">4.2.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#textDescription" id="textDescription">description</a>
+</h1>
+<p id="rfc.section.4.2.2.p.1">Type: <samp>String</samp> (Defaults to the empty string if omitted) </p>
+<p id="rfc.section.4.2.2.p.2">A longer form description of the object. This is plain text, but a client SHOULD attempt to hyperlink URLs when displaying it.  </p>
+<h1 id="rfc.section.4.2.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.3">4.2.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#htmlDescription" id="htmlDescription">htmlDescription</a>
+</h1>
+<p id="rfc.section.4.2.3.p.1">Type: <samp>String</samp> (Defaults to the empty string if omitted) </p>
+<p id="rfc.section.4.2.3.p.2">A longer form rich-text description of the object. This is <a href="https://www.w3.org/TR/html/">HTML text</a> and allows to reference resources in the <strong>links</strong> property by use of CID URLs (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC2392" class="xref">[RFC2392]</a>).  To convert a CID URL to the <strong>cid</strong> property value of a <strong>Link</strong> object, implementations MUST follow the conversion described in section 2 of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC2392" class="xref">[RFC2392]</a>.  Implementations MAY choose not to follow untrusted external CID URLs referenced in the <strong>links</strong> property, in which case they MUST treat the <strong>htmlDescription</strong> property as if omitted. Implementations MUST preserve the value of this property, even if it contains untrusted links.  </p>
+<h1 id="rfc.section.4.2.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.4">4.2.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#locations" id="locations">locations</a>
+</h1>
+<p id="rfc.section.4.2.4.p.1">Type: <samp>String[Location]|null</samp> </p>
+<p id="rfc.section.4.2.4.p.2">A map of location ids to Location objects, representing locations associated with the object.  A location id may be any string and need only be unique to this object, although a UUID is a practical choice.  </p>
+<p id="rfc.section.4.2.4.p.3">A <strong>Location</strong> object has the following properties. All properties are optional, but every Location object MUST have at least one property: </p>
+<p></p>
+
+<ul>
+<li>
+<strong>name</strong>: <samp>String</samp> The human-readable name of the location.  </li>
+<li>
+<strong>description</strong>: <samp>String</samp> Human-readable instructions for accessing this location. This may be an address, set of directions, door access code, etc.  </li>
+<li>
+<strong>rel</strong>: <samp>String</samp> The relation type of this location to the JSCalendar object.  <br><br> This MUST be either one of the following values, registered in a future RFC, or a vendor-specific value. Any value the client or server doesn't understand should be treated the same as <samp>unknown</samp>.  <ul>
+<li>
+<samp>start</samp>: The JSCalendar object starts at this location.  </li>
+<li>
+<samp>end</samp>: The JSCalendar object ends at this location.  </li>
+<li>
+<samp>virtual</samp>: This is not a physical location (e.g. this location is an online chat room where people will meet).  </li>
+<li>
+<samp>unknown</samp>: The relation of this location to the calendar object is unknown.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>features</strong>: <samp>String[]|null</samp> The features supported by this location.  <br><br> The strings in the array MUST each be either one of the following values, registered in a future RFC, or a vendor-specific value. Any value the client or server doesn't understand should be ignored, but preserved.  <br><br> The features supported by locations with rel-type <samp>virtual</samp> are: <ul>
+<li>
+<samp>audio</samp>: audio conferencing </li>
+<li>
+<samp>chat</samp>: chat or instant messaging </li>
+<li>
+<samp>screen</samp>: screen sharing </li>
+<li>
+<samp>video</samp>: video conferencing </li>
+<li>any vendor-prefixed custom value </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>timeZone</strong>: <samp>String|null</samp> (Defaults to <samp>null</samp> if omitted) A time-zone for this location.  <br><br> If <samp>null</samp>, the <strong>timeZone</strong> from the JSCalendar object MUST be presumed when a time-zone is needed in relation to this location.  </li>
+<li>
+<strong>coordinates</strong>: <samp>String</samp> An <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5870" class="xref">[RFC5870]</a> <samp>geo:</samp> URI for the location.  </li>
+<li>
+<strong>uri</strong>: <samp>String</samp> A URI that represents how to connect to this location.  <br><br> This may be a telephone number (represented as <samp>tel:+1-555-555-555</samp>) for a teleconference, a web address for online chat, or any custom URI.  </li>
+<li>
+<strong>linkIds</strong>: <samp>String[]|null</samp> A list of ids for links to alternate representations of this location.  <br><br> For example, an alternative representation could be in vCard format. If a given value does not correspond to any link id in the links property of the instance, this MUST be ignored.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.2.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.5">4.2.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#links" id="links">links</a>
+</h1>
+<p id="rfc.section.4.2.5.p.1">Type: <samp>String[Link]|null</samp> </p>
+<p id="rfc.section.4.2.5.p.2">A map of link ids to Link objects, representing external resources associated with the object.  A link id may be any string and need only be unique to this object, although the href or a UUID are practical choices.  </p>
+<p id="rfc.section.4.2.5.p.3">A <strong>Link</strong> object has the following properties: </p>
+<p></p>
+
+<ul>
+<li>
+<strong>href</strong>: <samp>String</samp> A URI from which the resource may be fetched.  <br><br> This MAY be a <samp>data:</samp> URL, but it is recommended that the file be hosted on a server to avoid embedding arbitrary large data in JSCalendar object instances.  </li>
+<li>
+<strong>cid</strong> <samp>String|null</samp> The id used within the <strong>htmlDescription</strong> property to reference this link.  <br><br> If not null, this MUST be a valid Content-ID MIME header value (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC2392" class="xref">[RFC2392]</a>). The identifier MUST be unique within this JSCalendar object but has no meaning beyond that. Specifically, it MAY be different from the <strong>Link</strong> object identifier in the enclosing <strong>links</strong> property.  </li>
+<li>
+<strong>type</strong>: <samp>String|null</samp>(optional, defaults to <samp>null</samp>) The <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC6838" class="xref">content-type</a> of the resource, if known.  </li>
+<li>
+<strong>size</strong>: <samp>Number|null</samp>(optional, defaults to <samp>null</samp>) The size, in bytes, of the resource when fully decoded (i.e. the number of bytes in the file the user would download), if known.  </li>
+<li>
+<strong>rel</strong>: <samp>String</samp>(optional, defaults to <samp>related</samp>) Identifies the relation of the linked resource to the object. The value MUST be a registered relation type (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8288" class="xref">[RFC8288]</a> and <a href="https://www.iana.org/assignments/link-relations/link-relations.xhtml">IANA Link Relations</a>).  <br><br> Links with a rel of <samp>enclosure</samp> SHOULD be considered by the client as attachments for download.  <br><br> Links with a rel of <samp>describedby</samp> SHOULD be considered by the client to be an alternate representation of the description and HTML description.  <br><br> Links with a rel of <samp>icon</samp> SHOULD be considered by the client to be an image that it MAY use when presenting the calendar data to a user. The <strong>properties</strong> object of this link MAY include a <samp>display</samp> property indicating the intended purpose of this image. If included, the value MUST be either one of the following values, registered in a future RFC, or a vendor-specific value.  <ul>
+<li>
+<samp>badge</samp>: an image inline with the title of the object </li>
+<li>
+<samp>graphic</samp>: a full image replacement for the object itself </li>
+<li>
+<samp>fullsize</samp>: an image that is used to enhance the object </li>
+<li>
+<samp>thumbnail</samp>: a smaller variant of <samp>fullsize </samp> to be used when space for the image is constrained </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>title</strong>: <samp>String|null</samp>(optional, defaults to <samp>null</samp>) A human-readable description of the resource.  </li>
+<li>
+<strong>properties</strong>: <samp>String[String|null]|null</samp>(optional, defaults to <samp>null</samp>) Extra metadata submitted by clients about a link. Server implementations MUST preserve these properties.  <br><br> The keys are as defined in this document, as defined in a future RFC, or URIs that should be owned by the client author to avoid conflicts.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.2.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.6">4.2.6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#locale" id="locale">locale</a>
+</h1>
+<p id="rfc.section.4.2.6.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.4.2.6.p.2">The <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5646" class="xref">[RFC5646]</a> language tag that best describes the locale used for the calendar object, if known.  </p>
+<h1 id="rfc.section.4.2.7">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.7">4.2.7.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#keywords" id="keywords">keywords</a>
+</h1>
+<p id="rfc.section.4.2.7.p.1">Type: <samp>String[]|null</samp> </p>
+<p id="rfc.section.4.2.7.p.2">A list of keywords or tags related to the object. The values are free-form and do not have to follow any particular structure.  </p>
+<h1 id="rfc.section.4.2.8">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.8">4.2.8.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#categories" id="categories">categories</a>
+</h1>
+<p id="rfc.section.4.2.8.p.1">Type: <samp>String[]|null</samp> </p>
+<p id="rfc.section.4.2.8.p.2">Specifies the categories related to the calendar object. Array values MUST be URIs.  In contrast to <strong>keywords</strong>, categories typically are structured.  <br><br> For example, a vendor owning the domain <samp>example.com</samp> might define the categories <samp>http://example.com/categories/sports/american-football"</samp> and <samp>http://example.com/categories/music/r-b</samp>.  </p>
+<h1 id="rfc.section.4.2.9">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.2.9">4.2.9.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#color" id="color">color</a>
+</h1>
+<p id="rfc.section.4.2.9.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.4.2.9.p.2">Specifies a color clients MAY use when displaying this calendar object. The value is a case-insensitive color name taken from the CSS3 set of names, defined in Section 4.3 of <a href="https://www.w3.org/TR/2011/REC-css3-color-20110607/#svg-color">W3C.REC-css3-color-20110607</a> or a CSS3 RGB color hex value.  </p>
+<h1 id="rfc.section.4.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3">4.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#recurrence-props" id="recurrence-props">Recurrence properties</a>
+</h1>
+<h1 id="rfc.section.4.3.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.1">4.3.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#recurrenceRule" id="recurrenceRule">recurrenceRule</a>
+</h1>
+<p id="rfc.section.4.3.1.p.1">Type: <samp>Recurrence</samp> </p>
+<p id="rfc.section.4.3.1.p.2">Defines a recurrence rule (repeating pattern) for recurring calendar objects.  </p>
+<p id="rfc.section.4.3.1.p.3">A <strong>Recurrence</strong> object is a JSON object mapping of a RECUR value type in iCalendar, see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a> and<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7529" class="xref">[RFC7529]</a>.  Objects recur by applying the recurrence rule (and <strong>recurrenceOverrides</strong>) to the <strong>start</strong> date/time.  A <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jstask" class="xref">JSTask</a> without a <strong>start</strong> property value recurs by its <strong>due</strong> date/time, if defined.  </p>
+<p id="rfc.section.4.3.1.p.4">A Recurrence object has the following properties: </p>
+
+<ul>
+<li>
+<strong>frequency</strong>: <samp>String</samp> This MUST be one of the following values: <ul>
+<li>
+<samp>yearly</samp> </li>
+<li>
+<samp>monthly</samp> </li>
+<li>
+<samp>weekly</samp> </li>
+<li>
+<samp>daily</samp> </li>
+<li>
+<samp>hourly</samp> </li>
+<li>
+<samp>minutely</samp> </li>
+<li>
+<samp>secondly</samp> </li>
+</ul>
+<p> To convert from iCalendar, simply lower-case the FREQ part.  </p>
+</li>
+<li>
+<strong>interval</strong>: <samp>Number</samp>(optional, defaults to <samp>1</samp>) The INTERVAL part from iCal. If included, it MUST be an integer <samp>x &gt;= 1</samp>.  </li>
+<li>
+<strong>rscale</strong>: <samp>String</samp>(optional, defaults to <samp>"gregorian"</samp>) The RSCALE part from iCalendar <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7529" class="xref">RSCALE</a>, converted to lower-case.  </li>
+<li>
+<strong>skip</strong>: <samp>String</samp>(optional, defaults to <samp>"omit"</samp>) The SKIP part from iCalendar <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7529" class="xref">RSCALE</a>, converted to lower-case.  </li>
+<li>
+<strong>firstDayOfWeek</strong>: <samp>String</samp>(optional, defaults to <samp>"mo"</samp>) The WKST part from iCalendar, represented as a lower-case abbreviated two-letter English day of the week.  If included, it MUST be one of the following values: <samp>"mo"|"tu"|"we"|"th"|"fr"|"sa"|"su"</samp>.  </li>
+<li>
+<strong>byDay</strong>: <samp>NDay[]</samp>(optional) An <strong>NDay</strong> object has the following properties: <ul>
+<li>
+<strong>day</strong>: <samp>String</samp> The day-of-the-week part of the BYDAY value in iCalendar, lower-cased. MUST be one of the following values: <samp>"mo"|"tu"|"we"|"th"|"fr"|"sa"|"su"</samp>.  </li>
+<li>
+<strong>nthOfPeriod</strong>: <samp>Number</samp>(optional) The optional ordinal part of the BYDAY value in iCalendar (e.g. <samp>"+1"</samp> or <samp>"-3"</samp>).  If present, rather than representing every occurrence of the weekday defined in the <strong>day</strong> property of this <strong>NDay</strong>, it represents only a specific instance within the recurrence period.  The value can be positive or negative, but MUST NOT be zero. A negative integer means nth-last of period.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>byMonthDay</strong>: <samp>Number[]</samp>(optional) The BYMONTHDAY part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>byMonth</strong>: <samp>String[]</samp>(optional) The BYMONTH part from iCalendar. Each entry is a string representation of a number, starting from <samp>1</samp> for the first month in the calendar (e.g. <samp>"1" </samp> means <samp>"January"</samp> with Gregorian calendar), with an optional <samp>"L"</samp> suffix (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7529" class="xref">[RFC7529]</a>) for leap months (this MUST be upper-case, e.g. <samp>"3L"</samp>).  The array MUST have at least one entry if included.  </li>
+<li>
+<strong>byYearDay</strong>: <samp>Number[]</samp>(optional) The BYYEARDAY part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>byWeekNo</strong>: <samp>Number[]</samp>(optional) The BYWEEKNO part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>byHour</strong>: <samp>Number[]</samp>(optional) The BYHOUR part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>byMinute</strong>: <samp>Number[]</samp>(optional) The BYMINUTE part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>bySecond</strong>: <samp>Number[]</samp>(optional) The BYSECOND part from iCalendar. The array MUST have at least one entry if included.  </li>
+<li>
+<strong>count</strong>: <samp>Number</samp>(optional) The COUNT part from iCalendar. This MUST NOT be included if an <strong>until</strong> property is specified.  </li>
+<li>
+<strong>until</strong>: <samp>LocalDate</samp>(optional) The UNTIL part from iCalendar. This MUST NOT be included if a <strong>count</strong> property is specified. Note, as in iCalendar, this date is presumed to be in the time-zone specified in <strong>timeZone</strong>. It is not a UTC time.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.3.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.3.2">4.3.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#recurrenceOverrides" id="recurrenceOverrides">recurrenceOverrides</a>
+</h1>
+<p id="rfc.section.4.3.2.p.1">Type: <samp>LocalDate[PatchObject|null]|null</samp> </p>
+<p id="rfc.section.4.3.2.p.2">A map of the recurrence-ids (the date-time of the start of the occurrence) to either <samp>null</samp>, to indicate the occurrence should be deleted, or an object of patches to apply to the generated occurrence object.  </p>
+<p id="rfc.section.4.3.2.p.3">If the recurrence-id does not match an expanded start date from a recurrence rule, it is to be treated as an additional occurrence (like an RDATE from iCalendar). The patch object may often be empty in this case.  </p>
+<p id="rfc.section.4.3.2.p.4">By default, an occurrence inherits all properties from the main object except the start (or due) date-time, which is shifted to the new start time. However, individual properties of the occurrence can be modified by a patch, or multiple patches.  </p>
+<p id="rfc.section.4.3.2.p.5">A pointer in the PatchObject MUST NOT start with one of the following prefixes; any patch with such a key MUST be ignored: </p>
+
+<ul>
+<li>@type </li>
+<li>uid </li>
+<li>relatedTo </li>
+<li>prodId </li>
+<li>method </li>
+<li>isAllDay </li>
+<li>recurrenceRule </li>
+<li>recurrenceOverrides </li>
+<li>replyTo </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4">4.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sharing-scheduling-properties" id="sharing-scheduling-properties">Sharing and scheduling properties</a>
+</h1>
+<h1 id="rfc.section.4.4.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.1">4.4.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#priority" id="priority">priority</a>
+</h1>
+<p id="rfc.section.4.4.1.p.1">Type: <samp>Number</samp>(defaults to <samp>0</samp> if omitted) </p>
+<p id="rfc.section.4.4.1.p.2">Specifies a priority for the calendar object. This may be used as part of scheduling systems to help resolve conflicts for a time period.  </p>
+<p id="rfc.section.4.4.1.p.3">The priority is specified as an integer in the range 0 to 9. A value of 0 specifies an undefined priority. A value of 1 is the highest priority. A value of 2 is the second highest priority.  Subsequent numbers specify a decreasing ordinal priority. A value of 9 is the lowest priority.  Other integer values are reserved for future use.  </p>
+<h1 id="rfc.section.4.4.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.2">4.4.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#freeBusyStatus" id="freeBusyStatus">freeBusyStatus</a>
+</h1>
+<p id="rfc.section.4.4.2.p.1">Type: <samp>String</samp>(defaults to <samp>busy</samp> if omitted) </p>
+<p id="rfc.section.4.4.2.p.2">Specifies how this property should be treated when calculating free-busy state. The value MUST be one of: </p>
+
+<ul>
+<li>
+<samp>"free"</samp>: The object should be ignored when calculating whether the user is busy.  </li>
+<li>
+<samp>"busy"</samp>: The object should be included when calculating whether the user is busy.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.4.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.3">4.4.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#privacy" id="privacy">privacy</a>
+</h1>
+<p id="rfc.section.4.4.3.p.1">Type: <samp>String</samp>(defaults to <samp>public</samp> if omitted) </p>
+<p id="rfc.section.4.4.3.p.2">Calendar objects are normally collected together and may be shared with other users. The privacy property allows the object owner to indicate that it should not be shared, or should only have the time information shared but the details withheld.  Enforcement of the restrictions indicated by this property are up to the implementations.  </p>
+<p id="rfc.section.4.4.3.p.3">This property MUST NOT affect the information sent to scheduled participants; it is only interpreted when the object is shared as part of a shared calendar.  </p>
+<p id="rfc.section.4.4.3.p.4">The value MUST be either one of the following values, registered in a future RFC, or a vendor-specific value. Vendor specific values MUST be prefixed with a domain name controlled by the vendor, e.g. <samp>example.com/topsecret</samp>. Any value the client or server doesn't understand should be preserved but treated as equivalent to <samp>private</samp>.  </p>
+
+<ul>
+<li>
+<samp>public</samp>: The full details of the object are visible to those whom the object's calendar is shared with.  </li>
+<li>
+<samp>private</samp>: The details of the object are hidden; only the basic time and metadata is shared. Implementations MUST ensure the following properties are stripped when the object is accessed by a sharee: <ul>
+<li>title </li>
+<li>description </li>
+<li>htmlDescription </li>
+<li>locations </li>
+<li>links </li>
+<li>locale </li>
+<li>localizations </li>
+<li>participants </li>
+<li>replyTo </li>
+</ul>
+<p> In addition, any patches in </p>
+<samp>recurrenceOverrides</samp> whose key is prefixed with one of the above properties MUST be stripped.  </li>
+<li>
+<samp>secret</samp>: The object is hidden completely (as though it did not exist) when the calendar is shared.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.4.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.4">4.4.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#replyTo" id="replyTo">replyTo</a>
+</h1>
+<p id="rfc.section.4.4.4.p.1">Type: <samp>String[String]|null</samp> </p>
+<p id="rfc.section.4.4.4.p.2">Represents methods by which a participant may RSVP to the organizer of the calendar object. The keys in the property value are the available methods. The value is a URI to use that method.  Future methods may be defined in future specifications; a calendar client MUST ignore any method it does not understand.  </p>
+<p id="rfc.section.4.4.4.p.3">The following methods are defined: </p>
+
+<ul>
+<li>
+<samp>imip</samp>: The organizer accepts an iMIP <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC6047" class="xref">[RFC6047]</a> response. The value MUST be a <samp>mailto:</samp> URI.  </li>
+<li>
+<samp>web</samp>: There is a web page where the user may submit an RSVP using their browser. The value MUST be an <samp>http:</samp> or <samp>https:</samp> URI Template (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC6570" class="xref">[RFC6570]</a>) in level 1 format. The template MAY contain variables that MUST be expanded from the JSCalendar object as defined in table <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#replyTo-web-variables" class="xref">Table 1</a>.  Calendar clients SHOULD be prepared to handle authentication requests from the respective web page and for the participant email, but this specification does not mandate any specific mechanism.  </li>
+</ul>
+
+<p> </p>
+<div id="rfc.table.1"></div>
+<div id="replyTo-web-variables"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>replyTo URI Template variables</caption>
+<thead><tr>
+<th class="left">Variable</th>
+<th class="left">Expand to</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">email </td>
+<td class="left">The <strong>email</strong> property value of the replying <strong>Participant</strong> object.  </td>
+</tr>
+<tr>
+<td class="left">uid </td>
+<td class="left">The <strong>uid</strong> property value of the JSCalendar object.  </td>
+</tr>
+<tr>
+<td class="left">sequence </td>
+<td class="left">The <strong>sequence</strong> property value of the JSCalendar object.  </td>
+</tr>
+<tr>
+<td class="left">recurrenceId </td>
+<td class="left">The recurrence-id when replying for a single occurrence of a recurring JSCalendar object. The value is the date-time of the non-overridden start as determined by expanding the <strong>recurrenceRule</strong> of the JSCalendar object.  </td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.4.4.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.4.5">4.4.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#participants" id="participants">participants</a>
+</h1>
+<p id="rfc.section.4.4.5.p.1">Type: <samp>String[Participant]|null</samp> </p>
+<p id="rfc.section.4.4.5.p.2">A map of participant ids to participants, describing their participation in the calendar object.  A participant id may be any string and need only be unique to this calendar object; the email address of the participant is a good choice.  </p>
+<p id="rfc.section.4.4.5.p.3">A <strong>Participant</strong> object has the following properties. Properties are mandatory unless marked otherwise: </p>
+
+<ul>
+<li>
+<strong>name</strong>: <samp>String</samp> The display name of the participant (e.g. "Joe Bloggs").  </li>
+<li>
+<strong>email</strong>: <samp>String</samp> The email address for the participant.  </li>
+<li>
+<strong>kind</strong>: <samp>String</samp>(optional, defaults to <samp>unknown</samp>) What kind of entity this participant is.  <br><br> This MUST be either one of the following values, registered in a future RFC, or a vendor-specific value. Any value the client or server doesn't understand should be treated the same as <samp>unknown</samp>.  <ul>
+<li>
+<samp>individual</samp>: a single person </li>
+<li>
+<samp>group</samp>: a collection of people invited as a whole </li>
+<li>
+<samp>resource</samp>: a non-human resource, e.g. a projector </li>
+<li>
+<samp>location</samp>: a physical location involved in the calendar object that needs to be scheduled, e.g. a conference room.  </li>
+<li>
+<samp>unknown</samp>: no information is available about the kind of this participant.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>roles</strong>: <samp>String[]</samp> A list of roles that this participant fulfils.  <br><br> At least one value MUST be specified for the participant. This MUST be either one of the following values, registered in a future RFC, or a vendor-specific value.  Any value the client or server doesn't understand should be preserved but ignored.  <ul>
+<li>
+<samp>owner</samp>: The participant is an owner of the object, and allowed to make alterations to any part of it.  </li>
+<li>
+<samp>attendee</samp>: The participant is an attendee of the calendar object. Attendees are only allowed to alter their own participation.  </li>
+<li>
+<samp>chair</samp>: The participant is in charge of the calendar object when it occurs.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>locationId</strong>: <samp>String|null</samp>(optional, defaults to <samp>null</samp>) The location at which this participant is expected to be attending.  <br><br> If the value does not correspond to any location id in the locations property of the instance, this MUST be treated the same as if the participant's locationId were specified as null.  </li>
+<li>
+<strong>rsvpResponse</strong>: <samp>String</samp>(optional, defaults to <samp>needs-action</samp>) The RSVP response, if any, of this participant.  <br><br> The value MUST be either one of the following values, registered in a future RFC, or a vendor-specific value: <ul>
+<li>
+<samp>needs-action</samp>: No status yet set by the participant.  </li>
+<li>
+<samp>accepted</samp>: The invited participant will participate.  </li>
+<li>
+<samp>declined</samp>: The invited participant will not participate.  </li>
+<li>
+<samp>tentative</samp>: The invited participant may participate.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>participation</strong>: <samp>String</samp>(optional, defaults to <samp>required</samp>) The required participation of this participant.  <br><br> The value MUST be either one of the following values, registered in a future RFC, or a vendor-specific value. Any value the client or server doesn't understand should be treated the same as <samp>required</samp>.  <ul>
+<li>
+<samp>non-participant</samp>: Indicates a participant who is copied for information purposes only.  </li>
+<li>
+<samp>optional</samp>: Indicates a participant whose participation is optional.  </li>
+<li>
+<samp>required</samp>: Indicates a participant whose participation is required.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>rsvpWanted</strong>: <samp>Boolean</samp>(optional, defaults to <samp>false</samp>) If true, the organizer is expecting the participant to notify them of their status.  </li>
+<li>
+<strong>scheduleSequence</strong>: <samp>Number</samp>(optional, defaults to <samp>0</samp>) The sequence number of the last response from the participant. If defined, this MUST be a non-negative integer.  <br><br> This can be used to determine whether the partcipant has sent a new RSVP following significant changes to the calendar object, and to determine if future responses are responding to a current or older view of the data.  </li>
+<li>
+<strong>scheduleUpdated</strong>: <samp>UTCDate|null</samp>(optional, defaults to <samp>null</samp>) The <strong>updated</strong> property of the last iMIP response from the participant.  <br><br> This can be compared to the <strong>updated</strong> timestamp in future iMIP responses to determine if the response is older or newer than the current data.  </li>
+<li>
+<strong>invitedBy</strong>: <samp>String|null</samp>(optional, defaults to <samp>null</samp>) The participant id of the participant who invited this one, if known.  </li>
+<li>
+<strong>delegatedTo</strong>: <samp>String[]|null</samp>(optional, defaults to <samp>null</samp>) A list of participant ids of participants that this participant has delegated their participation to.  This MUST be omitted if none (rather than an empty array).  </li>
+<li>
+<strong>delegatedFrom</strong>: <samp>String[]|null</samp>(optional, defaults to <samp>null</samp>) A list of participant ids that this participant is acting as a delegate for. This MUST be omitted if none (rather than an empty array).  </li>
+<li>
+<strong>memberOf</strong>: <samp>String[]|null</samp>(optional, defaults to <samp>null</samp>) A list of group participants that were invited to this calendar object, which caused this participant to be invited due to their membership of the group(s). This MUST be omitted if none (rather than an empty array).  </li>
+<li>
+<strong>linkIds</strong>: <samp>String[]|null</samp>(optional, defaults to <samp>null</samp>) Links to more information about this participant, for example in vCard format. If a given value does not correspond to any link id in the links property of the instance, this id MUST be ignored. This MUST be omitted if none (rather than an empty array).  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5">4.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#alerts-properties" id="alerts-properties">Alerts properties</a>
+</h1>
+<h1 id="rfc.section.4.5.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.1">4.5.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#useDefaultAlerts" id="useDefaultAlerts">useDefaultAlerts</a>
+</h1>
+<p id="rfc.section.4.5.1.p.1">Type: <samp>Boolean</samp> (defaults to <samp>false</samp> if omitted) </p>
+<p id="rfc.section.4.5.1.p.2">If <samp>true</samp>, use the user's default alerts and ignore the value of the <strong>alerts</strong> property. Fetching user defaults is dependent on the API from which this JSCalendar object is being fetched, and is not defined in this specification.  If an implementation cannot determine the user's default alerts, or none are set, it MUST process the alerts property as if useDefaultAlerts is set to <samp>false</samp>.  </p>
+<h1 id="rfc.section.4.5.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.5.2">4.5.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#alerts" id="alerts">alerts</a>
+</h1>
+<p id="rfc.section.4.5.2.p.1">Type: <samp>String[Alert]|null</samp> </p>
+<p id="rfc.section.4.5.2.p.2">A map of alert ids to Alert objects, representing alerts/reminders to display or send the user for this calendar object. An alert id may be any string and need only be unique to this calendar object, although a globally unique id is a practical choice (also see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#uid" class="xref">Section 4.1.2</a>)).  </p>
+<p id="rfc.section.4.5.2.p.3">An <strong>Alert</strong> Object has the following properties: </p>
+
+<ul>
+<li>
+<strong>relativeTo</strong>: <samp>String</samp> (optional, defaults to <samp>before-start</samp>) Specifies where the offset is relative to for the alarm to trigger. The value MUST be one of: <ul>
+<li>
+<samp>before-start</samp> </li>
+<li>
+<samp>after-start</samp> </li>
+<li>
+<samp>before-end</samp> </li>
+<li>
+<samp>after-end</samp> </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>offset</strong>: <samp>Duration</samp> The offset from the start and end/due of the calendar object to fire the alert.  If the calendar object does not define a time-zone, the user's default time-zone SHOULD be used when determining the offset, if known. Otherwise, the time-zone to use is implementation specific.  </li>
+<li>
+<strong>action</strong>: <samp>DisplayAction|EmailAction|UnknownAction</samp> <br><br> Describes how to alert the user.  <br><br> A <strong>DisplayAction</strong> means a message (which is service dependent, but SHOULD include the title and start or due time of the calendar object) SHOULD be shown to the user on any client connected to this account at the specified time. How this message is formatted (and any sound or other method of drawing the user's attention) is client specific. It has the following properties: <ul>
+<li>
+<strong>type</strong>: <samp>String</samp> The value MUST be <samp>display</samp>.  </li>
+<li>
+<strong>acknowledged</strong>: <samp>UTCDate|null </samp> (optional) <br><br> When the user has permanently dismissed the alert the client MUST set this to the current time in UTC. Other clients which sync this property can then automatically dismiss or suppress duplicate alerts (alerts with the same alert id that triggered on or before this date-time).  <br><br> For a recurring calendar object, the <strong>acknowledged</strong> property of the parent object MUST be updated, unless the alert is already overridden in <strong>recurrenceOverrides</strong>.  </li>
+<li>
+<strong>snoozed</strong>: <samp>UTCDate|null</samp> (optional) <br><br> If the user temporarily dismisses the alert, this is the UTC date-time after which it should be reshown.  Clients displaying this alert SHOULD hide it if the snoozed property is updated to a time in the future. When that time is reached, the alert SHOULD be reshown unless acknowledged is now after the original trigger time.  <br><br> Setting this property on an instance of a recurring calendar object MUST update the alarm on the master object, unless the respective instance already is defined in <samp>recurrenceOverrides</samp>. It MUST NOT generate an override for the sole use of snoozing an alarm.  </li>
+<li>
+<strong>mediaLinkIds</strong>: <samp>String[]|null </samp> (optional) <br><br> A list of link identifiers in the JSCalendar object <strong>links</strong> property.  Clients SHOULD play one or more of the link contents that are supported by the client implementation and are appropriate for the given device and user context.  </li>
+</ul>
+<p> </p>
+<br><br> An <strong>EmailAction</strong> means an email SHOULD be sent as specified in the object at the specified time. It has the following properties: <ul>
+<li>
+<strong>type</strong>: <samp>String</samp> The value MUST be <samp>email</samp>.  </li>
+<li>
+<strong>to</strong>: <samp>Emailer[]</samp> An array of name/email objects to send the alert to.  <br><br> An <strong>Emailer</strong> object has the following properties: <ul>
+<li>name: String The name of the recipient. If not known, clients SHOULD use the empty string.  </li>
+<li>email: String The email address of the recipient.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>subject</strong>: <samp>String</samp> (optional) The subject to use for the email. If omitted, this is implementation specific, but the server SHOULD try to choose an appropriate subject, e.g. by including the summary.  </li>
+<li>
+<strong>textBody</strong>: <samp>String</samp> (optional) The plain-text body to use for the email. If omitted, the body of the email is implementation specific, but the server SHOULD include all pertinent details about the calendar object, such as summary, location and start time.  </li>
+<li>
+<strong>htmlBody</strong>: <samp>String</samp> (optional) The HTML body to use for the email, with rich-media content processed as for the <strong>htmlDescription</strong> property of the JSCalendar object (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#htmlDescription" class="xref">Section 4.2.3</a>), e.g. all CID URLs MUST be embedded in the generated alert email HTML body, or the <strong>htmlBody</strong> property ignored completely.  If the textBody property of this alert action is not set, the server SHOULD generate a plain-text version from the HTML body and include it in a <samp>multipart/alternative</samp> MIME message.  </li>
+<li>
+<strong>attachments</strong>: <samp>String[]|null</samp> (optional) A list of link identifiers in the JSCalendar object links property. Included attachments SHOULD be embedded in the MIME message with the <samp>Content-Disposition</samp> header value set to <samp>attachment</samp> (see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC2183" class="xref">[RFC2183]</a>).  Implementations MAY refuse to include one or more attachments when building an alert email, in which case they MUST ignore the contents of the <strong>attachments</strong> property (e.g. they MUST NOT include a subset of attachments).  </li>
+</ul>
+<p> </p>
+<br><br> An <strong>UnknownAction</strong> object is an object that contains a <strong>type </strong> property whose value is not <samp>email</samp> or <samp>string</samp>, plus zero or more other properties. This is for compatibility with client extensions and future RFCs. The client or server SHOULD NOT trigger any type of alert for action types they do not understand, but MUST preserve them.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.4.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6">4.6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#localized-props" id="localized-props">Multilingual properties</a>
+</h1>
+<h1 id="rfc.section.4.6.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.4.6.1">4.6.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#localizations" id="localizations">localizations</a>
+</h1>
+<p id="rfc.section.4.6.1.p.1">Type: <samp>String[PatchObject]|null</samp> </p>
+<p id="rfc.section.4.6.1.p.2">A map of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5646" class="xref">[RFC5646]</a> language tags to patch objects, which localise the calendar object into the locale of the respective language tag.  </p>
+<p id="rfc.section.4.6.1.p.3">See the description of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#patchobject-type" class="xref">PatchObject</a> for the structure of the PatchObject. The patches are applied to the top-level object and MUST only patch the following properties: </p>
+
+<ul>
+<li>title </li>
+<li>description </li>
+<li>htmlDescription </li>
+<li>keywords </li>
+<li>Location name </li>
+<li>Location description </li>
+<li>Link title </li>
+<li>EmailAction alert subject </li>
+<li>EmailAction alert textBody </li>
+<li>EmailAction alert htmlBody </li>
+<li>any Link properties entry except the <samp>display</samp> field </li>
+<li>any UnknownAction alert property except the <samp>type</samp> field </li>
+<li>any unknown or vendor-specific property (if not defined otherwise in a future RFC or vendor-specific extension).  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5">5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-object-props" id="jscalendar-object-props">Type-specific JSCalendar properties</a>
+</h1>
+<h1 id="rfc.section.5.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1">5.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsevent-props" id="jsevent-props">JSEvent properties</a>
+</h1>
+<p id="rfc.section.5.1.p.1">In addition to the common JSCalendar object <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-props" class="xref">properties</a> a JSEvent has the following properties: </p>
+<h1 id="rfc.section.5.1.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.1">5.1.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#start" id="start">start</a>
+</h1>
+<p id="rfc.section.5.1.1.p.1">Type: <samp>LocalDate</samp> e.g.  <samp>2015-09-02T00:00:00</samp> </p>
+<p id="rfc.section.5.1.1.p.2">The date/time the event would start in the event's time-zone.  </p>
+<p id="rfc.section.5.1.1.p.3">A valid JSEvent MUST include this property.  </p>
+<h1 id="rfc.section.5.1.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.2">5.1.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#timeZone" id="timeZone">timeZone</a>
+</h1>
+<p id="rfc.section.5.1.2.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.5.1.2.p.2">The <a href="http://www.iana.org/time-zones">IANA Time Zone Database</a> name for the time-zone the event is scheduled in, or <samp>null</samp> for floating time. If omitted, this MUST be presumed to be <samp>null</samp> (i.e. floating time).  </p>
+<h1 id="rfc.section.5.1.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.3">5.1.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#duration" id="duration">duration</a>
+</h1>
+<p id="rfc.section.5.1.3.p.1">Type: <samp>Duration</samp>, e.g. <samp>P2DT3H</samp> (Defaults to <samp>P0D</samp> if omitted) </p>
+<p id="rfc.section.5.1.3.p.2">The zero or positive duration of the event in absolute time (i.e. in UTC time; ignoring DST shifts).  To get the end date in the event time-zone, convert start into UTC, then add the duration, then convert the result into the appropriate time-zone.  </p>
+<p id="rfc.section.5.1.3.p.3">A JSEvent MAY be end in a different time-zone (e.g. a plane flight crossing time-zones). In this case, the JSEvent MUST specify the end time-zone in a <strong>location</strong> property value that defines its <strong>rel</strong> to be <samp>end</samp> and the end time-zone in its <strong>timeZone</strong> property.  </p>
+<h1 id="rfc.section.5.1.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.4">5.1.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#isAllDay" id="isAllDay">isAllDay</a>
+</h1>
+<p id="rfc.section.5.1.4.p.1">Type: <samp>Boolean</samp> (optional, defaults to <samp>false</samp>) </p>
+<p id="rfc.section.5.1.4.p.2">Specifies if the event an all day event, such as a birthday or public holiday.  </p>
+<p id="rfc.section.5.1.4.p.3">If <strong>isAllDay</strong> is true, then the following restrictions apply: <strong>timeZone</strong> property.  </p>
+
+<ul>
+<li>the <strong>start</strong> property MUST have a time component of <samp>T00:00:00</samp>.  </li>
+<li>the <strong>duration</strong> property MUST only include a day component.  </li>
+</ul>
+
+<p> Note that all-day events MAY be bound to a specific time-zone, as defined by the </p>
+<h1 id="rfc.section.5.1.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.1.5">5.1.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sharing-scheduling-status-jsevent" id="sharing-scheduling-status-jsevent">status</a>
+</h1>
+<p id="rfc.section.5.1.5.p.1">Type: <samp>String</samp> </p>
+<p id="rfc.section.5.1.5.p.2">The scheduling status (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sharing-scheduling-properties" class="xref">Section 4.4</a>) of a JSEvent defaults to <samp>confirmed</samp> if omitted.  </p>
+<p id="rfc.section.5.1.5.p.3">If set, it MUST be one of: </p>
+
+<ul>
+<li>
+<samp>confirmed</samp>: Indicates the event is definite.  </li>
+<li>
+<samp>cancelled</samp>: Indicates the event is cancelled.  </li>
+<li>
+<samp>tentative</samp>: Indicates the event is tentative.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.5.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2">5.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jstask-props" id="jstask-props">JSTask properties</a>
+</h1>
+<p id="rfc.section.5.2.p.1">In addition to the common JSCalendar object <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-props" class="xref">properties</a> a JSTask has the following properties: </p>
+<h1 id="rfc.section.5.2.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.1">5.2.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#due-task" id="due-task">due</a>
+</h1>
+<p id="rfc.section.5.2.1.p.1">Type: <samp>LocalDate|null</samp> e.g.  <samp>2015-09-02T00:00:00</samp> </p>
+<p id="rfc.section.5.2.1.p.2">The date/time the task is due in the task's time-zone.  </p>
+<h1 id="rfc.section.5.2.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.2">5.2.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#start-task" id="start-task">start</a>
+</h1>
+<p id="rfc.section.5.2.2.p.1">Type: <samp>LocalDate|null</samp> e.g.  <samp>2015-09-02T00:00:00</samp> </p>
+<p id="rfc.section.5.2.2.p.2">The date/time the task should start in the task's time-zone.  </p>
+<h1 id="rfc.section.5.2.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.3">5.2.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#timeZone-task" id="timeZone-task">timeZone</a>
+</h1>
+<p id="rfc.section.5.2.3.p.1">Type: <samp>String|null</samp> </p>
+<p id="rfc.section.5.2.3.p.2">The IANA Time Zone Database name for the time-zone the task is scheduled in, or <samp>null</samp> for floating time. If omitted, this MUST be presumed to be <samp>null</samp> (i.e. floating time).  </p>
+<h1 id="rfc.section.5.2.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.4">5.2.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#estimatedDuration" id="estimatedDuration">estimatedDuration</a>
+</h1>
+<p id="rfc.section.5.2.4.p.1">Type: <samp>Duration|null</samp>, e.g.  <samp>P2DT3H</samp> </p>
+<p id="rfc.section.5.2.4.p.2">Specifies the estimated positive duration of time the task takes to complete.  </p>
+<p id="rfc.section.5.2.4.p.3">If the <strong>start</strong> and <strong>due</strong> properties are set, the estimated duration SHOULD be less than or equal to the time interval between these properties.  </p>
+<h1 id="rfc.section.5.2.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.5">5.2.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#completed" id="completed">completed</a>
+</h1>
+<p id="rfc.section.5.2.5.p.1">Type: <samp>UTCDate|null</samp>, e.g.  <samp>2016-06-13T12:00:00Z</samp> </p>
+<p id="rfc.section.5.2.5.p.2">Specifies the date/time the task was completed.  </p>
+<p id="rfc.section.5.2.5.p.3">If the task is recurring and has future instances, a client may want to denote a specific task recurrence as completed but leave other instances as uncompleted. One way to achieve this is by overriding the completed property in the task <strong>recurrenceOverrides</strong>.  However, this could produce a long list of completion times for regularly recurring tasks. An alternative approach is to split the JSTask into a current, single instance of JSTask with this instance completion time and a future recurring instance. Also see the definition of the <strong>relatedTo</strong> on splitting.  </p>
+<h1 id="rfc.section.5.2.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.6">5.2.6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#isAllDay-task" id="isAllDay-task">isAllDay</a>
+</h1>
+<p id="rfc.section.5.2.6.p.1">Type: <samp>Boolean</samp> (optional, defaults to <samp>false</samp>) </p>
+<p id="rfc.section.5.2.6.p.2">Specifies if the task is an all day task.  </p>
+<p id="rfc.section.5.2.6.p.3">If <strong>isAllDay</strong> is true, then the <strong>start</strong> and <strong>due</strong> properties MUST have a time component of <samp>T00:00:00</samp>.  Note that the <strong>estimatedDuration</strong> property MAY contain a non-zero time duration. All-day tasks MAY be bound to a specific time-zone, as defined by the <strong>timeZone</strong> property.  </p>
+<h1 id="rfc.section.5.2.7">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.7">5.2.7.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#progress-participant-task" id="progress-participant-task">progress</a>
+</h1>
+<p id="rfc.section.5.2.7.p.1">In addition to the common properties of a <strong>Participant</strong> object (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#participants" class="xref">Section 4.4.5</a>), a Participant within a JSTask supports the  following property: <br><br> A <strong>ParticipantProgress</strong> object has the following properties: <br><br> </p>
+
+<ul><li>
+<strong>progress</strong>: <samp>ParticipantProgress|null</samp> The progress of the participant for this task, if known.  </li></ul>
+
+<p> </p>
+
+<ul>
+<li>
+<strong>status</strong>: <samp>String</samp> Describes the completion status of the participant's progress.  <br><br> The value MUST  be at most one of the following values, registered in a future RFC, or a vendor-specific value: <ul>
+<li>
+<samp>completed</samp>: The progress of this participant is complete.  </li>
+<li>
+<samp>in-process</samp>: The progress of this participant is in process.  </li>
+</ul>
+<p> </p>
+</li>
+<li>
+<strong>timestamp</strong>: <samp>UTCDate</samp> Describes the latest time when the participant progress got updated.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.5.2.8">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.2.8">5.2.8.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sharing-scheduling-status-jstask" id="sharing-scheduling-status-jstask">status</a>
+</h1>
+<p id="rfc.section.5.2.8.p.1">Type: <samp>String</samp> </p>
+<p id="rfc.section.5.2.8.p.2">The scheduling status (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#sharing-scheduling-properties" class="xref">Section 4.4</a>) of a JSTask defaults to <samp>needs-action</samp> if omitted.  </p>
+<p id="rfc.section.5.2.8.p.3">If set, it MUST be one of: </p>
+
+<ul>
+<li>
+<samp>needs-action</samp>: Indicates the task needs action.  </li>
+<li>
+<samp>completed</samp>: Indicates the task is completed.  If this value is set, then the timestamp in the <strong>completed</strong> property MUST NOT be null.  </li>
+<li>
+<samp>in-process</samp>: Indicates the task is in process.  </li>
+<li>
+<samp>cancelled</samp>: Indicates the task is cancelled.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.5.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3">5.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jsgroup-props" id="jsgroup-props">JSGroup properties</a>
+</h1>
+<p id="rfc.section.5.3.p.1">JSGroup supports the following <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#jscalendar-props" class="xref">JSCalendar properties</a>: </p>
+
+<ul>
+<li>@type </li>
+<li>uid </li>
+<li>created </li>
+<li>updated </li>
+<li>categories </li>
+<li>keywords </li>
+<li>name </li>
+<li>description </li>
+<li>htmlDescription </li>
+<li>color </li>
+<li>links </li>
+</ul>
+
+<p> as well as the following JSGroup-specific properties: </p>
+<h1 id="rfc.section.5.3.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.1">5.3.1.</a> entries</h1>
+<p id="rfc.section.5.3.1.p.1">Type: <samp>(JSTask|JSEvent)[]|null</samp> </p>
+<p id="rfc.section.5.3.1.p.2">A list of group members. The list MAY contain multiple object types and implementations MUST ignore entries of unknown type. The property value MUST either be <samp>null</samp> or the list MUST NOT be empty.  </p>
+<h1 id="rfc.section.5.3.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.5.3.2">5.3.2.</a> source</h1>
+<p id="rfc.section.5.3.2.p.1">Type: <samp>String|null</samp> (optional, default is <samp>null</samp>) </p>
+<p id="rfc.section.5.3.2.p.2">The source from which updated versions of this group may be retrieved from.  If the value is not <samp>null</samp>, it MUST be a URI.  </p>
+<h1 id="rfc.section.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6">6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#icalendar-translation" id="icalendar-translation">Conversion from and to iCalendar</a>
+</h1>
+<p id="rfc.section.6.p.1">This section specifies which JSCalendar properties can be mapped from and to iCalendar format. Implementations SHOULD follow these conversion guidelines. Still, JSCalendar does not restrict itself to iCalendar and conversion between these two formats MAY be lossy.  </p>
+<h1 id="rfc.section.6.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.1">6.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-jsevent" id="translate-jsevent">JSEvent</a>
+</h1>
+<p id="rfc.section.6.1.p.1">The iCalendar counterpart to <strong>JSEvent</strong> is the VEVENT component type <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a>. A VEVENT component that is a direct child of a VCALENDAR component is equivalent to a standalone JSEvent. A VEVENT component <strong>within</strong> a VEVENT maps to the entries of the JSEvent <strong>recurrenceOverrides</strong> property.  </p>
+<div id="rfc.table.2"></div>
+<div id="translate-jsevent-table"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Translation between JSEvent and iCalendar</caption>
+<thead><tr>
+<th class="left">Property</th>
+<th class="left">iCalendar counterpart</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">isAllDay</td>
+<td class="left">True, if the type of the DTSTART property in iCalendar is DATE. When translating from JSCalendar the iCalendar DTSTART property is of DATE value type, if the <strong>isAllDay</strong> property is set to true and the <strong>timeZone</strong> property is null.  </td>
+</tr>
+<tr>
+<td class="left">start</td>
+<td class="left">Corresponds to the DTSTART property in iCalendar. Note that time-zone information is stored separately in JSEvent.  </td>
+</tr>
+<tr>
+<td class="left">timeZone</td>
+<td class="left">Corresponds to the TZID part of the DTSTART property in iCalendar.  If the event has a different end time-zone to start time-zone, this should be added as a JSCalendar <strong>location</strong> with just a <strong>timeZone</strong> property and <samp>rel="end"</samp>.  </td>
+</tr>
+<tr>
+<td class="left">duration</td>
+<td class="left">Corresponds to the DURATION or DSTART+DTEND properties in iCalendar.  </td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.6.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.2">6.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-jstask" id="translate-jstask">JSTask</a>
+</h1>
+<p id="rfc.section.6.2.p.1">The iCalendar counterpart to <strong>JSTask</strong> is the VTODO component type <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a>. A VTODO component that is a direct child of a VCALENDAR component is equivalent to a standalone JSTask. A VTODO component <strong>within</strong> a master VTODO maps to the entries of the JSTask <strong>recurrenceOverrides</strong> property.  </p>
+<div id="rfc.table.3"></div>
+<div id="translate-jstask-table"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Translation between JSTask and iCalendar</caption>
+<thead><tr>
+<th class="left">Property</th>
+<th class="left">iCalendar counterpart</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">isAllDay</td>
+<td class="left">True, if the type of the DTSTART property in iCalendar is DATE. When translating from JSCalendar the iCalendar DTSTART property is of DATE value type, if the <strong>isAllDay</strong> property is set to true and the <strong>timeZone</strong> property is null.  </td>
+</tr>
+<tr>
+<td class="left">due</td>
+<td class="left">Corresponds to the DUE and DTSTART+DURATION properties in iCalendar. When mapping iCalendar VTODOs with DTSTART+DURATION, the due date is the result of adding DURATION to DTSTART in the DTSTART time-zone.  </td>
+</tr>
+<tr>
+<td class="left">start</td>
+<td class="left">Corresponds to the DTSTART property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">timeZone</td>
+<td class="left">Corresponds to the TZID part of the DTSTART/DUE properties in iCalendar.  If the task has a different end time-zone to start or due time-zone, this should be added as a JSCalendar <strong>location</strong> with just a <strong>timeZone</strong> property and <samp>rel="end"</samp>.  </td>
+</tr>
+<tr>
+<td class="left">estimatedDuration</td>
+<td class="left">Corresponds to the ESTIMATED-DURATION iCalendar property.  <strong>NON-STANDARD</strong>: this property is currently non-standard, see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#draft-apthorp-ical-tasks" class="xref">[draft-apthorp-ical-tasks]</a>.  </td>
+</tr>
+<tr>
+<td class="left">completed</td>
+<td class="left">Maps to the COMPLETED iCalendar property.  </td>
+</tr>
+<tr>
+<td class="left">progress</td>
+<td class="left">Corresponds to the PARTSTAT and COMPLETED properties in iCalendar.  </td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.6.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.3">6.3.</a> JSGroup</h1>
+<p id="rfc.section.6.3.p.1">A JSGroup converts to a iCalendar VCALENDAR containing VEVENT or VTODO components.  </p>
+<div id="rfc.table.4"></div>
+<div id="translate-jsgroup-table"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Translation between JSGroup and iCalendar</caption>
+<thead><tr>
+<th class="left">Property</th>
+<th class="left">iCalendar counterpart</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">entries</td>
+<td class="left">The VEVENT and VTODO components within a top-level VCALENDAR component.  </td>
+</tr>
+<tr>
+<td class="left">source</td>
+<td class="left">Corresponds to the SOURCE property in iCalendar.  </td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.6.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.4">6.4.</a> Common properties</h1>
+<div id="rfc.table.5"></div>
+<div id="translate-commonprops-table"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Translation between JSCalendar and iCalendar</caption>
+<thead><tr>
+<th class="left">Property</th>
+<th class="left">iCalendar counterpart</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">alerts</td>
+<td class="left">An <strong>Alert</strong> corresponds to the VALARM component in iCalendar, where the <strong>action</strong> is determined by the iCalendar ACTION property value (e.g., a <samp>DISPLAY</samp> property indicates that the JSCalendar Alert action is a <strong>DisplayAction</strong> and similarly an iCalendar <samp>EMAIL</samp> value for <strong>EmailAction</strong> action).  The <strong>relativeTo</strong> and <strong>offset</strong> properties corresponds to the iCalendar TRIGGER property.  <strong>NON-STANDARD</strong>: The iCalendar properties for JSCalendar Alert actions are non-standard, see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#draft-daboo-valarm-extensions" class="xref">[draft-daboo-valarm-extensions]</a>.  </td>
+</tr>
+<tr>
+<td class="left">categories</td>
+<td class="left">Corresponds to the STRUCTURED-CATEGORY property in iCalendar, see.  <strong>NON-STANDARD</strong>: this property is currently non-standard, see <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#draft-ietf-calext-ical-relations" class="xref">[draft-ietf-calext-ical-relations]</a>.  </td>
+</tr>
+<tr>
+<td class="left">color</td>
+<td class="left">Corresponds to the COLOR property in iCalendar, as specified in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7986" class="xref">[RFC7986]</a>.  </td>
+</tr>
+<tr>
+<td class="left">created</td>
+<td class="left">Corresponds to the CREATED property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">description</td>
+<td class="left">Corresponds to the DESCRIPTION property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">htmlDescription</td>
+<td class="left">There is no direct equivalent in iCalendar. If the <strong>description</strong> is empty, implementations SHOUD store a plain text version of <strong>htmlDescription</strong> in iCalendar DESCRIPTION.  </td>
+</tr>
+<tr>
+<td class="left">freeBusyStatus</td>
+<td class="left">Corresponds to the TRANSP property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">keywords</td>
+<td class="left">Corresponds to the CATEGORIES property in iCalendar, as specified in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7986" class="xref">[RFC7986]</a>.  </td>
+</tr>
+<tr>
+<td class="left">links</td>
+<td class="left">Corresponds to the ATTACH (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a>) and IMAGE iCalendar properties (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7986" class="xref">[RFC7986]</a>).  </td>
+</tr>
+<tr>
+<td class="left">locale</td>
+<td class="left">Corresponds to the LANGUAGE parameter in iCalendar, which is added to individual properties.  When converting from iCalendar, one language must be picked as the main locale for the object, and all properties in other languages moved to the localizations JSEvent property.  </td>
+</tr>
+<tr>
+<td class="left">localizations</td>
+<td class="left">Corresponds to the LANGUAGE parameter in iCalendar, which is added to individual properties.  When converting from iCalendar, one language must be picked as the main locale for the object, and all properties in other languages moved to the localizations JSEvent property.  </td>
+</tr>
+<tr>
+<td class="left">locations</td>
+<td class="left">See <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-locations-participants" class="xref">Section 6.5</a>.  </td>
+</tr>
+<tr>
+<td class="left">method</td>
+<td class="left">Corresponds to the METHOD property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">participants</td>
+<td class="left">See <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-locations-participants" class="xref">Section 6.5</a>.  </td>
+</tr>
+<tr>
+<td class="left">priority</td>
+<td class="left">Corresponds to the PRIORITY property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">privacy</td>
+<td class="left">Corresponds to the CLASS property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">prodId</td>
+<td class="left">Corresponds to the PRODID property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">recurrenceOverrides</td>
+<td class="left">Corresponds to the RDATE and EXDATE properties in iCalendar, plus VEVENT (for JSEvent) or VTODO (for JSTask) instances with a recurrence-id.  </td>
+</tr>
+<tr>
+<td class="left">recurrenceRule</td>
+<td class="left">Corresponds to the RRULE property in iCalendar. See the property definition at section <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#recurrenceRule" class="xref">Section 4.3.1</a> how to map a RRULE value.  </td>
+</tr>
+<tr>
+<td class="left">relatedTo</td>
+<td class="left">Corresponds to the RELATED-TO property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">replyTo</td>
+<td class="left">A <strong>replyTo</strong> property of type <samp>imip</samp> corresponds to the email address of the ORGANIZER property in iCalendar. There is no iCalendar representation for the <samp>web</samp> type.  </td>
+</tr>
+<tr>
+<td class="left">sequence</td>
+<td class="left">Corresponds to the SEQUENCE property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">status</td>
+<td class="left">Corresponds to the STATUS property in iCalendar (converted to lower-case).  </td>
+</tr>
+<tr>
+<td class="left">title</td>
+<td class="left">Corresponds to the SUMMARY property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">uid</td>
+<td class="left">Corresponds to the UID property in iCalendar.  </td>
+</tr>
+<tr>
+<td class="left">updated</td>
+<td class="left">Corresponds to the DTSTAMP and LAST-MODIFIED properties in iCalendar. (These are only different in the iTIP case, and the difference is not actually useful.) </td>
+</tr>
+</tbody>
+</table>
+<h1 id="rfc.section.6.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.5">6.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-locations-participants" id="translate-locations-participants">Locations and participants</a>
+</h1>
+<p id="rfc.section.6.5.p.1">Both JSCalendar participants and locations have counterparts in iCalendar but provide richer representation.  <br><br> The following table outlines translation of JSCalendar participants. Where iCalendar has distinct properties for ORGANIZER and ATTENDEE, these are merged in JSCalendar into the Participant object type.  </p>
+<div id="rfc.table.6"></div>
+<div id="translate-participants-table"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Translation of Participant between JSCalendar and iCalendar</caption>
+<thead><tr>
+<th class="left">Property</th>
+<th class="left">iCalendar counterpart</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">name </td>
+<td class="left">the CN parameter </td>
+</tr>
+<tr>
+<td class="left">kind </td>
+<td class="left">the CUTYPE parameter </td>
+</tr>
+<tr>
+<td class="left">rsvpResponse </td>
+<td class="left">the PARTSTAT parameter </td>
+</tr>
+<tr>
+<td class="left">role </td>
+<td class="left">the ORGANIZER and ATTENDEE properties. Owners map to the iCalendar ORGANIZER property, where mapping multiple owners to iCalendar is implementation-specific but MUST be consistent across mappings of the same object.  </td>
+</tr>
+<tr>
+<td class="left">participation </td>
+<td class="left">the ROLE parameter </td>
+</tr>
+<tr>
+<td class="left">locationId </td>
+<td class="left">the JSCalendar identifier of a mapped CONFERENCE property that has the MODERATOR feature defined in its FEATURE parameter values. If multiple such CONFERENCE properties are defined in iCalendar, then the one with the most interactive features is chosen (VIDEO over AUDIO over CHAT over anything else).  </td>
+</tr>
+<tr>
+<td class="left">rsvpWanted </td>
+<td class="left">the RSVP parameter </td>
+</tr>
+<tr>
+<td class="left">delegatedTo </td>
+<td class="left">the DELEGATED-TO parameter </td>
+</tr>
+<tr>
+<td class="left">delegatedFrom </td>
+<td class="left">the DELEGATED-FROM parameter </td>
+</tr>
+<tr>
+<td class="left">memberOf </td>
+<td class="left">the MEMBER parameter </td>
+</tr>
+<tr>
+<td class="left">scheduleSequence </td>
+<td class="left">the SEQUENCE property of the participant's latest iMIP message </td>
+</tr>
+<tr>
+<td class="left">scheduleUpdated </td>
+<td class="left">the DTSTAMP property of the participant's latest iMIP message </td>
+</tr>
+</tbody>
+</table>
+<p id="rfc.section.6.5.p.2">For JSCalendar locations, the iCalendar counterparts are the <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC5545" class="xref">[RFC5545]</a> LOCATION and the extended iCalendar <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7986" class="xref">[RFC7986]</a> CONFERENCE properties.  <br><br> An iCalendar LOCATION property becomes a JSCalendar Location with just a description property. CONFERENCE property values in iCalendar map to locations with <strong>rel</strong> type <samp>virtual</samp>.  The location <strong>feature</strong> property value corresponds to the extended iCalendar FEATURE property parameter values defined in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7986" class="xref">[RFC7986]</a>. Both iCalendar PHONE and AUDIO features map to the <samp>audio</samp> feature and the FEED parameter value is omitted. See the mapping for <strong>locationId</strong> in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#translate-participants-table" class="xref">Table 6</a> on how to map CONFERENCE properties that contain the MODERATOR feature.  </p>
+<h1 id="rfc.section.6.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.6.6">6.6.</a> Unknown properties</h1>
+<p id="rfc.section.6.6.p.1">Both JSCalendar and iCalendar calendar objects may contain properties that are not expressible in the other format. This specification does not mandate how to preserve these properties. Instead, it leaves negotiation on how to treat unknown properties to client and server implementations and their protocol used to exchange calendar objects.  <br><br> Two notable options to represent and preserve arbitrary iCalendar object properties in JSCalendar are: </p>
+
+<ul>
+<li>
+<strong>JCal</strong>: Define iCalendar properties in JCal format (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7265" class="xref">[RFC7265]</a>) in a vendor-specific property of the JCalendar object. The JCal-formatted value may either only contain iCalendar properties that were not mapped to JSCalendar properties, or contain the complete iCalendar object representation.  </li>
+<li>
+<strong>Alternate link</strong>: Define an alternate link (<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#links" class="xref">Section 4.2.5</a>) value pointing to the iCalendar representation of the JSCalendar object.  E.g. the alternative representation of a VEVENT would be represented as a link with rel <samp>alternate</samp> and type <samp>text/calendar;component=VEVENT</samp>.  </li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.7">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7">7.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#examples" id="examples">JSCalendar object examples</a>
+</h1>
+<p id="rfc.section.7.p.1">The following examples illustrate several aspects of the JSCalendar data model and format.  The examples may omit mandatory or additional properties, which is indicated by a placeholder property with key <samp>...</samp>. While most of the examples use calendar event objects, they are also illustrative for tasks.  </p>
+<h1 id="rfc.section.7.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.1">7.1.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-simple-event" id="example-simple-event">Simple event</a>
+</h1>
+<p id="rfc.section.7.1.p.1">This example illustrates a simple one-time event. It specifies a one-time event that begins on January 15, 2018 at 1pm New York local time and ends after 1 hour.  </p>
+<pre>{
+  "@type": "jsevent",
+  "uid": "2a358cee-6489-4f14-a57f-c104db4dc2f1",
+  "updated": "2018-01-15T18:00:00Z",
+  "title": "Some event",
+  "start": "2018-01-15T13:00:00",
+  "timeZone": "America/New_York",
+  "duration": "PT1H"
+}
+          </pre>
+<h1 id="rfc.section.7.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.2">7.2.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-simple-task" id="example-simple-task">Simple task</a>
+</h1>
+<p id="rfc.section.7.2.p.1">This example illustrates a simple task for a plain to-do item.  </p>
+<pre>{
+  "@type": "jstask",
+  "uid": "2a358cee-6489-4f14-a57f-c104db4dc2f2",
+  "updated": "2018-01-15T18:00:00Z",
+  "title": "Do something"
+}
+          </pre>
+<h1 id="rfc.section.7.3">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.3">7.3.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-simple-group" id="example-simple-group">Simple group</a>
+</h1>
+<p id="rfc.section.7.3.p.1">This example illustrates a simple calendar object group that contains an event and a task.  </p>
+<pre>{
+  "@type": "jsgroup",
+  "uid": "2a358cee-6489-4f14-a57f-c104db4dc343",
+  "updated": "2018-01-15T18:00:00Z",
+  "name": "A simple group",
+  "entries": [
+    {
+      "@type": "jsevent",
+      "uid": "2a358cee-6489-4f14-a57f-c104db4dc2f1",
+      "updated": "2018-01-15T18:00:00Z",
+      "title": "Some event",
+      "start": "2018-01-15T13:00:00",
+      "timeZone": "America/New_York",
+      "duration": "PT1H"
+    },
+    {
+      "@type": "jstask",
+      "uid": "2a358cee-6489-4f14-a57f-c104db4dc2f2",
+      "updated": "2018-01-15T18:00:00Z",
+      "title": "Do something"
+    }
+  ]
+}
+          </pre>
+<h1 id="rfc.section.7.4">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.4">7.4.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-all-day-event" id="example-all-day-event">All-day event</a>
+</h1>
+<p id="rfc.section.7.4.p.1">This example illustrates an event for an international holiday. It specifies an all-day event on April 1 that occurs every year since the year 1900.  </p>
+<pre>{
+  "...": "",
+  "title": "April Fool's Day",
+  "isAllDay": true,
+  "start": "1900-04-01T00:00:00",
+  "duration": "P1D",
+  "recurrenceRule": {
+    "frequency": "yearly"
+  }
+}
+          </pre>
+<h1 id="rfc.section.7.5">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.5">7.5.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-due-task" id="example-due-task">Task with a due date</a>
+</h1>
+<p id="rfc.section.7.5.p.1">This example illustrates a task with a due date. It is a reminder to buy groceries before 6pm Vienna local time on January 19, 2018. The calendar user expects to need 1 hour for shopping.  </p>
+<pre>{
+  "...": "",
+  "title": "Buy groceries",
+  "due": "2018-01-19T18:00:00",
+  "timeZone": "Europe/Vienna",
+  "estimatedDuration": "PT1H"
+}
+          </pre>
+<h1 id="rfc.section.7.6">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.6">7.6.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-zoned-event-endtz" id="example-zoned-event-endtz">Event with end time-zone</a>
+</h1>
+<p id="rfc.section.7.6.p.1">This example illustrates the use of end time-zones by use of an international flight. The flight starts on April 1, 2018 at 9am in Berlin local time. The duration of the flight is scheduled at 10 hours 30 minutes. The time at the flights destination is in the same time-zone  as Tokyo. Calendar clients could use the end time-zone to display the arrival time in Tokyo local time and highlight the time-zone difference of the flight.  </p>
+<pre>{
+  "...": "",
+  "title": "Flight XY51 from FRA to NRT",
+  "start": "2018-04-01T09:00:00",
+  "timeZone": "Europe/Berlin",
+  "duration": "PT10H30M",
+  "locations": {
+    "2a358cee-6489-4f14-a57f-c104db4dc2f1": {
+      "rel": "end",
+      "timeZone": "Asia/Tokyo"
+    }
+  }
+}
+          </pre>
+<h1 id="rfc.section.7.7">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.7">7.7.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-floating-event" id="example-floating-event">Floating-time event (with recurrence)</a>
+</h1>
+<p id="rfc.section.7.7.p.1">This example illustrates the use of floating-time. Since January 1, 2018, a calendar user blocks 30 minutes every day to practice Yoga at 7am local time, in whatever time-zone the user is located on that date.  </p>
+<pre>{
+  "...": "",
+  "title": "Yoga",
+  "start": "2018-01-01T07:00:00",
+  "duration": "PT30M",
+  "recurrenceRule": {
+    "frequency": "daily"
+  }
+}
+          </pre>
+<h1 id="rfc.section.7.8">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.8">7.8.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-multi-location-event" id="example-multi-location-event">Event with multiple locations and localization</a>
+</h1>
+<p id="rfc.section.7.8.p.1">This example illustrates an event that happens at both a physical and a virtual location. Fans can see a live convert on premises or online. The event title and descriptions are localized. (Note: the localization of the event description contains an UTF-8 encoded German Umlaut. This character may have been replaced with ASCII characters in the plain-text rendering of this RFC document) </p>
+<pre>{
+  "...": "",
+  "title": "Live from Music Bowl: The Band",
+  "description": "Go see the biggest music event ever!",
+  "locale": "en",
+  "start": "2018-07-04T17:00:00",
+  "timeZone": "America/New_York",
+  "duration": "PT3H",
+  "locations": {
+    "9366e041-bb4c-4aa4-b249-b4657cab925c": {
+      "name": "The Music Bowl",
+      "description": "Music Bowl, Central Park, New York",
+      "coordinates": "geo:40.7829,73.9654"
+    },
+    "6f3696c6-1e07-47d0-9ce1-f50014b0041a": {
+      "name": "Free live Stream from Music Bowl",
+      "rel": "virtual",
+      "features": [
+        "video",
+        "audio",
+        "chat"
+      ],
+      "uri": "https://stream.example.com/the_band_2018"
+    }
+  },
+  "localizations": {
+    "de": {
+      "title": "Live von der Music Bowl: The Band!",
+      "description": "Schau dir das größte Musikereignis an!",
+      "locations/6f3696c6-1e07-47d0-9ce1-f50014b0041a/name":
+                             "Gratis Live-Stream aus der Music Bowl"
+    }
+  }
+}
+          </pre>
+<h1 id="rfc.section.7.9">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.9">7.9.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-recurring-overrides" id="example-recurring-overrides">Recurring event with overrides</a>
+</h1>
+<p id="rfc.section.7.9.p.1">This example illustrates the use of recurrence overrides. A math course at a University is held for the first time on January 8, 2018 at 9am London time and occurs every week until June 25, 2018. Each lecture lasts for one hour and 30 minutes and is located at the Mathematics department. This event has exceptional occurrences: at the last occurrence of the course is an exam, which lasts for 2 hours and starts at 10am. Also, the location of the exam differs from the usual location. On April 2, May 7 and May 28 no course is held.  </p>
+<pre>{
+  "...": "",
+  "title": "Calculus I",
+  "start": "2018-01-08T09:00:00",
+  "timeZone": "Europe/London",
+  "duration": "PT1H30M",
+  "locations": {
+    "2a358cee-6489-4f14-a57f-c104db4dc2f1": {
+      "title": "Math lab room 1",
+      "description": "Math Lab I, Department of Mathematics"
+    }
+  },
+  "recurrenceRule": {
+    "frequency": "weekly",
+    "until": "2018-06-25T09:00:00"
+  },
+  "recurrenceOverrides": {
+    "2018-04-02T09:00:00": null,
+    "2018-05-07T09:00:00": null,
+    "2018-05-28T09:00:00": null,
+    "2018-06-25T09:00:00": {
+      "title": "Calculus I Exam",
+      "start": "2018-06-25T10:00:00",
+      "duration": "PT2H",
+      "locations": {
+        "2a358cee-6489-4f14-a57f-c104db4dc2f1": {
+          "title": "Big Auditorium",
+          "description": "Big Auditorium, Other Road"
+        }
+      }
+    }
+  }
+}
+          </pre>
+<h1 id="rfc.section.7.10">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.7.10">7.10.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#example-recurring-participants" id="example-recurring-participants">Recurring event with participants</a>
+</h1>
+<p id="rfc.section.7.10.p.1">This example illustrates scheduled events. A team meeting occurs every week since January 8, 2018 at 9am Johannesburg time. The event owner also chairs the event. Participants meet in a virtual meeting room. An attendee has accepted the invitation, but on March 8, 2018 he is unavailable and declined participation for this occurrence.  </p>
+<pre>{
+  "...": "",
+  "title": "FooBar team meeting",
+  "start": "2018-01-08T09:00:00",
+  "timeZone": "Africa/Johannesburg",
+  "duration": "PT1H",
+  "locations": {
+    "2a358cee-6489-4f14-a57f-c104db4dc2f1": {
+      "title": "ChatMe meeting room",
+      "rel": "virtual",
+      "features": [
+        "audio",
+        "chat",
+        "video"
+      ],
+      "uri": "https://chatme.example.com?id=1234567"
+    }
+  },
+  "recurrenceRule": {
+    "frequency": "weekly"
+  },
+  "replyTo": {
+    "imip": "zoe@foobar.example.com"
+  },
+  "participants": {
+    "tom@foobar.example.com": {
+      "name": "Tom Tool",
+      "email": "tom@foobar.example.com",
+      "rsvpResponse": "accepted",
+      "roles": [
+        "attendee"
+      ]
+    },
+    "zoe@foobar.example.com": {
+      "name": "Zoe Zelda",
+      "email": "zoe@foobar.example.com",
+      "rsvpResponse": "accepted",
+      "roles": [
+        "owner",
+        "chair"
+      ]
+    },
+    "...": ""
+  },
+  "recurrenceOverrides": {
+    "2018-03-08T09:00:00": {
+      "participants/tom@foobar.example.com/rsvpResponse": "declined"
+    }
+  }
+}
+          </pre>
+<h1 id="rfc.section.8">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.8">8.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.8.p.1">The use of JSON as a format does have its own inherent security risks as discussed in Section 12 of <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8259" class="xref">[RFC8259]</a>. Even though JSON is considered a safe subset of JavaScript, it should be kept in mind that a flaw in the parser processing JSON could still impose a threat, which doesn't arise with conventional iCalendar data.  </p>
+<p id="rfc.section.8.p.2">With this in mind, a parser for JSON data aware of the security implications should be used for the format described in this document. For example, the use of JavaScript's <samp>eval()</samp> function is considered an unacceptable security risk, as described in Section 12 of<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC8259" class="xref">[RFC8259]</a>. A native parser with full awareness of the JSON format should be preferred.  </p>
+<h1 id="rfc.section.9">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.9">9.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<p id="rfc.section.9.p.1">This document amends the <samp>application/calendar</samp> MIME media type defined in <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#RFC7265" class="xref">[RFC7265]</a>.  </p>
+<p id="rfc.section.9.p.2">New optional parameter: <samp>type</samp> with value being one of <samp>jsevent</samp>, <samp>jstask</samp>, <samp>jsgroup</samp>.  The parameter MUST NOT occur more than once.  </p>
+<h1 id="rfc.section.10">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.section.10">10.</a> <a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#acknowledgments" id="acknowledgments">Acknowledgments</a>
+</h1>
+<p id="rfc.section.10.p.1">The authors would like to thank the members of CalConnect for their valuable contributions. This specification originated from the work of the API technical committee of CalConnect, the Calendaring and Scheduling Consortium.  </p>
+<h1 id="rfc.references">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references">11.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.1">11.1.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2183">[RFC2183]</b></td>
+<td class="top">
+<a>Troost, R.</a>, <a>Dorner, S.</a> and <a>K. Moore</a>, "<a href="https://tools.ietf.org/html/rfc2183">Communicating Presentation Information in Internet Messages: The Content-Disposition Header Field</a>", RFC 2183, DOI 10.17487/RFC2183, August 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2392">[RFC2392]</b></td>
+<td class="top">
+<a>Levinson, E.</a>, "<a href="https://tools.ietf.org/html/rfc2392">Content-ID and Message-ID Uniform Resource Locators</a>", RFC 2392, DOI 10.17487/RFC2392, August 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3339">[RFC3339]</b></td>
+<td class="top">
+<a>Klyne, G.</a> and <a>C. Newman</a>, "<a href="https://tools.ietf.org/html/rfc3339">Date and Time on the Internet: Timestamps</a>", RFC 3339, DOI 10.17487/RFC3339, July 2002.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3986">[RFC3986]</b></td>
+<td class="top">
+<a>Berners-Lee, T.</a>, <a>Fielding, R.</a> and <a>L. Masinter</a>, "<a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4122">[RFC4122]</b></td>
+<td class="top">
+<a>Leach, P.</a>, <a>Mealling, M.</a> and <a>R. Salz</a>, "<a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>", RFC 4122, DOI 10.17487/RFC4122, July 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4791">[RFC4791]</b></td>
+<td class="top">
+<a>Daboo, C.</a>, <a>Desruisseaux, B.</a> and <a>L. Dusseault</a>, "<a href="https://tools.ietf.org/html/rfc4791">Calendaring Extensions to WebDAV (CalDAV)</a>", RFC 4791, DOI 10.17487/RFC4791, March 2007.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5545">[RFC5545]</b></td>
+<td class="top">
+<a>Desruisseaux, B.</a>, "<a href="https://tools.ietf.org/html/rfc5545">Internet Calendaring and Scheduling Core Object Specification (iCalendar)</a>", RFC 5545, DOI 10.17487/RFC5545, September 2009.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5546">[RFC5546]</b></td>
+<td class="top">
+<a>Daboo, C.</a>, "<a href="https://tools.ietf.org/html/rfc5546">iCalendar Transport-Independent Interoperability Protocol (iTIP)</a>", RFC 5546, DOI 10.17487/RFC5546, December 2009.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5646">[RFC5646]</b></td>
+<td class="top">
+<a>Phillips, A.</a> and <a>M. Davis</a>, "<a href="https://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>", BCP 47, RFC 5646, DOI 10.17487/RFC5646, September 2009.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5870">[RFC5870]</b></td>
+<td class="top">
+<a>Mayrhofer, A.</a> and <a>C. Spanring</a>, "<a href="https://tools.ietf.org/html/rfc5870">A Uniform Resource Identifier for Geographic Locations ('geo' URI)</a>", RFC 5870, DOI 10.17487/RFC5870, June 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6047">[RFC6047]</b></td>
+<td class="top">
+<a>Melnikov, A.</a>, "<a href="https://tools.ietf.org/html/rfc6047">iCalendar Message-Based Interoperability Protocol (iMIP)</a>", RFC 6047, DOI 10.17487/RFC6047, December 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6570">[RFC6570]</b></td>
+<td class="top">
+<a>Gregorio, J.</a>, <a>Fielding, R.</a>, <a>Hadley, M.</a>, <a>Nottingham, M.</a> and <a>D. Orchard</a>, "<a href="https://tools.ietf.org/html/rfc6570">URI Template</a>", RFC 6570, DOI 10.17487/RFC6570, March 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6838">[RFC6838]</b></td>
+<td class="top">
+<a>Freed, N.</a>, <a>Klensin, J.</a> and <a>T. Hansen</a>, "<a href="https://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>", BCP 13, RFC 6838, DOI 10.17487/RFC6838, January 2013.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6901">[RFC6901]</b></td>
+<td class="top">
+<a>Bryan, P.</a>, <a>Zyp, K.</a> and <a>M. Nottingham</a>, "<a href="https://tools.ietf.org/html/rfc6901">JavaScript Object Notation (JSON) Pointer</a>", RFC 6901, DOI 10.17487/RFC6901, April 2013.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7265">[RFC7265]</b></td>
+<td class="top">
+<a>Kewisch, P.</a>, <a>Daboo, C.</a> and <a>M. Douglass</a>, "<a href="https://tools.ietf.org/html/rfc7265">jCal: The JSON Format for iCalendar</a>", RFC 7265, DOI 10.17487/RFC7265, May 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7493">[RFC7493]</b></td>
+<td class="top">
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7493">The I-JSON Message Format</a>", RFC 7493, DOI 10.17487/RFC7493, March 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7529">[RFC7529]</b></td>
+<td class="top">
+<a>Daboo, C.</a> and <a>G. Yakushev</a>, "<a href="https://tools.ietf.org/html/rfc7529">Non-Gregorian Recurrence Rules in the Internet Calendaring and Scheduling Core Object Specification (iCalendar)</a>", RFC 7529, DOI 10.17487/RFC7529, May 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7986">[RFC7986]</b></td>
+<td class="top">
+<a>Daboo, C.</a>, "<a href="https://tools.ietf.org/html/rfc7986">New Properties for iCalendar</a>", RFC 7986, DOI 10.17487/RFC7986, October 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8259">[RFC8259]</b></td>
+<td class="top">
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc8259">The JavaScript Object Notation (JSON) Data Interchange Format</a>", STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8288">[RFC8288]</b></td>
+<td class="top">
+<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/rfc8288">Web Linking</a>", RFC 8288, DOI 10.17487/RFC8288, October 2017.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.references.2">
+<a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.references.2">11.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="draft-apthorp-ical-tasks">[draft-apthorp-ical-tasks]</b></td>
+<td class="top">"<a href="https://tools.ietf.org/html/draft-apthorp-ical-tasks">Task Extensions to iCalendar</a>"</td>
+</tr>
+<tr>
+<td class="reference"><b id="draft-daboo-valarm-extensions">[draft-daboo-valarm-extensions]</b></td>
+<td class="top">"<a href="https://tools.ietf.org/html/draft-daboo-valarm-extensions">VALARM Extensions for iCalendar</a>"</td>
+</tr>
+<tr>
+<td class="reference"><b id="draft-ietf-calext-ical-relations">[draft-ietf-calext-ical-relations]</b></td>
+<td class="top">"<a href="https://tools.ietf.org/html/draft-ietf-calext-ical-relations">Support for iCalendar Relationships</a>"</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.authors"><a href="https://tools.ietf.org/id/draft-ietf-calext-jscalendar-00.html#rfc.authors">Authors' Addresses</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Neil Jenkins</span> 
+	  <span class="n hidden">
+		<span class="family-name">Jenkins</span>
+	  </span>
+	</span>
+	<span class="org vcardline">FastMail</span>
+	<span class="adr">
+	  <span class="vcardline">PO Box 234</span>
+<span class="vcardline">Collins St West</span>
+
+	  <span class="vcardline">
+		<span class="locality">Melbourne</span>,  
+		<span class="region"></span>
+		<span class="code">VIC 8007</span>
+	  </span>
+	  <span class="country-name vcardline">Australia</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:neilj@fastmailteam.com">neilj@fastmailteam.com</a></span>
+
+<span class="vcardline">URI: <a href="https://www.fastmail.com/">https://www.fastmail.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Robert Stepanek</span> 
+	  <span class="n hidden">
+		<span class="family-name">Stepanek</span>
+	  </span>
+	</span>
+	<span class="org vcardline">FastMail</span>
+	<span class="adr">
+	  <span class="vcardline">PO Box 234</span>
+<span class="vcardline">Collins St West</span>
+
+	  <span class="vcardline">
+		<span class="locality">Melbourne</span>,  
+		<span class="region"></span>
+		<span class="code">VIC 8007</span>
+	  </span>
+	  <span class="country-name vcardline">Australia</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:rsto@fastmailteam.com">rsto@fastmailteam.com</a></span>
+
+<span class="vcardline">URI: <a href="https://www.fastmail.com/">https://www.fastmail.com</a></span>
+
+  </address>
+</div>
+
+
+
+</body></html>
