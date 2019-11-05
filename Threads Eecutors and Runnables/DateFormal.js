@@ -53,7 +53,7 @@ class Task implements Runnable
 public class Test 
 { 
 	// Maximum number of threads in thread pool 
-	static final int MAX_T = 3;			 
+	static final int MAX_T = 4;			 
 
 	public static void main(String[] args) 
 	{ 
